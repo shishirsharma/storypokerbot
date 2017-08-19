@@ -11,6 +11,11 @@ through the conversation are chosen based on the user's response.
 
 module.exports = function(controller) {
 
+    // controller.hears('', 'ambient', function(bot, message) {
+    //     console.log('ambient');
+    //     console.log(message);
+    // });
+
     controller.hears(['color'], 'direct_message,direct_mention', function(bot, message) {
 
         bot.startConversation(message, function(err, convo) {

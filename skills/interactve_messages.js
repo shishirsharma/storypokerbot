@@ -4,13 +4,42 @@ module.exports = function(controller) {
     // if the button action is 'action', trigger an event
     // if the button action is 'say', act as if user said that thing
     controller.on('interactive_message_callback', function(bot, trigger) {
+        // console.log(trigger);
 
+        // if (trigger.actions[0].name.match(/^action$/)) {
+        //     controller.trigger(trigger.actions[0].value, [bot, trigger]);
+        //     return false; // do not bubble event
+        // }
+        // if (trigger.actions[0].name.match(/^say$/)) {
 
-        if (trigger.actions[0].name.match(/^action$/)) {
-            controller.trigger(trigger.actions[0].value, [bot, trigger]);
-            return false; // do not bubble event
-        }
-        if (trigger.actions[0].name.match(/^say$/)) {
+        //     var message = {
+        //         user: trigger.user,
+        //         channel: trigger.channel,
+        //         text: '<@' + bot.identity.id + '> ' + trigger.actions[0].value,
+        //         type: 'message',
+        //     };
+
+        //     var reply = trigger.original_message;
+
+        //     for (var a = 0; a < reply.attachments.length; a++) {
+        //         reply.attachments[a].actions = null;
+        //     }
+
+        //     var person = '<@' + trigger.user.id + '>';
+        //     if (message.channel[0] == 'D') {
+        //         person = 'You';
+        //     }
+
+        //     reply.attachments.push({
+        //         text: person + ' said, ' + trigger.actions[0].value,
+        //     });
+
+        //     bot.replyInteractive(trigger, reply);
+
+        //     controller.receiveMessage(bot, message);
+        //     return false; // do not bubble event
+        // }
+        if (trigger.callback_id.match(/^select_poker_action$/)) {
 
             var message = {
                 user: trigger.user,
@@ -21,24 +50,54 @@ module.exports = function(controller) {
 
             var reply = trigger.original_message;
 
-            for (var a = 0; a < reply.attachments.length; a++) {
-                reply.attachments[a].actions = null;
-            }
+            var value = JSON.parse(reply.attachments[2].actions[0].value);
 
-            var person = '<@' + trigger.user.id + '>';
+            reply.attachments = [];
+
+            Object.keys(value).forEach(function(key, index) {
+                reply.attachments.push({
+                    "text": `<@${key}> pointed: ${value[key]}`
+                });
+            });
+
+            //console.log(JSON.stringify(reply));
+
+            // console.log(reply);
+            bot.replyInteractive(trigger, reply);
+
+            return false; // do not bubble event
+        }
+        if (trigger.callback_id.match(/^select_point_action$/)) {
+
+            var message = {
+                user: trigger.user,
+                channel: trigger.channel,
+                text: '<@' + bot.identity.id + '> ' + trigger.actions[0].value,
+                type: 'message',
+            };
+
+            var reply = trigger.original_message;
+
+            var person = '<@' + trigger.user + '>';
             if (message.channel[0] == 'D') {
                 person = 'You';
             }
+            var value = JSON.parse(reply.attachments[2].actions[0].value);
 
-            reply.attachments.push(
-                {
-                    text: person + ' said, ' + trigger.actions[0].value,
-                }
-            );
+            //console.log(JSON.stringify(reply.attachments[2]));
+            value[trigger.user] = parseInt(trigger.actions[0].name, 10);
+            //console.log(JSON.stringify(value));
 
+            reply.attachments[2].actions[0].value = `${JSON.stringify(value)}`;
+
+            reply.attachments.push({
+                "text": `${person} has pointed`
+            });
+            //console.log(JSON.stringify(reply));
+
+            // console.log(reply);
             bot.replyInteractive(trigger, reply);
 
-            controller.receiveMessage(bot, message);
             return false; // do not bubble event
         }
 
