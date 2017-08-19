@@ -48,18 +48,205 @@ module.exports = function(controller) {
                 type: 'message',
             };
 
-            var reply = trigger.original_message;
+            if (trigger.actions[0].name.match(/^Reveal$/)) {
+                var reply = trigger.original_message;
 
-            var value = JSON.parse(reply.attachments[2].actions[0].value);
+                var value = JSON.parse(reply.attachments[2].actions[0].value);
 
-            reply.attachments = [];
+                reply.attachments = [ {
+                    "fallback": "Pre-filled because you have actions in your attachment.",
+                    "color": "#bdc3c7",
+                    "mrkdwn_in": [
+                        "text",
+                        "pretext",
+                        "fields"
+                    ],
+                    "callback_id": "select_poker_action",
+                    "attachment_type": "default",
+                    "actions": [
+                        {
+                            "name": "Repoint",
+                            "text": "Repoint",
+                            "type": "button",
+                            "style": "default",
+                            "value": `${JSON.stringify({})}`
+                        },
+                        {
+                            "name": "Dismiss",
+                            "text": "Dismiss",
+                            "type": "button",
+                            "style": "default",
+                            "value": "Dismiss"
+                        }
+                    ]
+                }];
 
-            Object.keys(value).forEach(function(key, index) {
-                reply.attachments.push({
-                    "text": `<@${key}> pointed: ${value[key]}`
+                Object.keys(value).forEach(function(key, index) {
+                    reply.attachments.push({
+                        "text": `<@${key}> pointed: ${value[key]}`
+                    });
                 });
-            });
-
+            }else if(trigger.actions[0].name.match(/^Repoint$/)){
+                var person = '<@' + trigger.user + '>';
+                var value = {};
+                var reply =  trigger.original_message;
+                reply.attachments =  [
+                        {
+                            "fallback": "Pre-filled because you have actions in your attachment.",
+                            "color": "#bdc3c7",
+                            "mrkdwn_in": [
+                                "text",
+                                "pretext",
+                                "fields"
+                            ],
+                            "callback_id": "select_point_action",
+                            "attachment_type": "default",
+                            "actions": [
+                                {
+                                    "name": "1",
+                                    "text": "1",
+                                    "type": "button",
+                                    "style": "default",
+                                    "value": "1"
+                                },
+                                {
+                                    "name": "2",
+                                    "text": "2",
+                                    "type": "button",
+                                    "style": "default",
+                                    "value": "2"
+                                },
+                                {
+                                    "name": "3",
+                                    "text": "3",
+                                    "type": "button",
+                                    "style": "default",
+                                    "value": "3"
+                                },
+                                {
+                                    "name": "5",
+                                    "text": "5",
+                                    "type": "button",
+                                    "style": "default",
+                                    "value": "5"
+                                },
+                                {
+                                    "name": "8",
+                                    "text": "8",
+                                    "type": "button",
+                                    "style": "default",
+                                    "value": "8"
+                                }
+                            ]
+                        },
+                        {
+                            "fallback": "Pre-filled because you have actions in your attachment.",
+                            "color": "#bdc3c7",
+                            "mrkdwn_in": [
+                                "text",
+                                "pretext",
+                                "fields"
+                            ],
+                            "callback_id": "select_point_dropdown",
+                            "attachment_type": "default",
+                            "actions": [
+                                {
+                                    "name": "Select point",
+                                    "text": "Select point",
+                                    "type": "select",
+                                    "value": "Select point",
+                                    "data_source": "static",
+                                    "options": [
+                                        {
+                                            "text": "1",
+                                            "value": "1"
+                                        },
+                                        {
+                                            "text": "2",
+                                            "value": "2"
+                                        },
+                                        {
+                                            "text": "3",
+                                            "value": "3"
+                                        },
+                                        {
+                                            "text": "4",
+                                            "value": "4"
+                                        },
+                                        {
+                                            "text": "5",
+                                            "value": "5"
+                                        },
+                                        {
+                                            "text": "6",
+                                            "value": "6"
+                                        },
+                                        {
+                                            "text": "7",
+                                            "value": "7"
+                                        },
+                                        {
+                                            "text": "8",
+                                            "value": "8"
+                                        },
+                                        {
+                                            "text": "9",
+                                            "value": "9"
+                                        },
+                                        {
+                                            "text": "10",
+                                            "value": "10"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "fallback": "Pre-filled because you have actions in your attachment.",
+                            "color": "#bdc3c7",
+                            "mrkdwn_in": [
+                                "text",
+                                "pretext",
+                                "fields"
+                            ],
+                            "callback_id": "select_poker_action",
+                            "attachment_type": "default",
+                            "actions": [
+                                {
+                                    "name": "Reveal",
+                                    "text": "Reveal",
+                                    "type": "button",
+                                    "style": "default",
+                                    "value": `${JSON.stringify(value)}`
+                                },
+                                {
+                                    "name": "Repoint",
+                                    "text": "Repoint",
+                                    "type": "button",
+                                    "style": "default",
+                                    "value": `${JSON.stringify(value)}`
+                                },
+                                {
+                                    "name": "Dismiss",
+                                    "text": "Dismiss",
+                                    "type": "button",
+                                    "style": "default",
+                                    "value": "Dismiss"
+                                }
+                            ]
+                        }
+                    ]
+                
+                
+            }else if(trigger.actions[0].name.match(/^Dismiss$/)){
+                var person = '<@' + trigger.user + '>';
+                var reply = trigger.original_message;
+                reply.attachments = [];
+                reply.attachments.push({
+                    "text": `${person} has dismissed`
+                }); 
+            }
+            
             //console.log(JSON.stringify(reply));
 
             // console.log(reply);
