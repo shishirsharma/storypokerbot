@@ -68,7 +68,7 @@ var bot_options = {
     clientId: process.env.clientId,
     clientSecret: process.env.clientSecret,
     debug: true,
-    scopes: ['bot'],
+    scopes: ['bot', 'commands'],
     studio_token: process.env.studio_token,
     studio_command_uri: process.env.studio_command_uri
 };
@@ -78,6 +78,9 @@ var bot_options = {
 if (process.env.MONGO_URI) {
     var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
     bot_options.storage = mongoStorage;
+} else if (process.env.REDIS_URI) {
+    var redisStorage = require('botkit-storage-redis')({mongoUri: process.env.REDIS_URL});
+    bot_options.storage = redisStorage;
 } else {
     bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
 }
