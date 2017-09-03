@@ -19,7 +19,7 @@ There are a myriad of methods you can use to set up an application on Slack, her
 
 * Install [ngrok](https://ngrok.com/) and expose your port `3000`.
 
-* Update that URL in [Event Subscriptions](https://api.slack.com/apps/<botid>/event-subscriptions) in Request URL. URL will be verified look for that to pass.
+* Update that URL in [Event Subscriptions](https://api.slack.com/apps/<botid>/event-subscriptions) in Request URL. URL will be verified, look for that to pass.
 
 * Type something in group with bot and you should see it updated in console logs. You are good to go.
 

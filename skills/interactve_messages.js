@@ -86,7 +86,8 @@ module.exports = function(controller) {
                         "text": `<@${key}> pointed: ${value[key]}`
                     });
                 });
-            }else if(trigger.actions[0].name.match(/^Repoint$/)){
+                console.log(reply.attachments);
+            } else if(trigger.actions[0].name.match(/^Repoint$/)){
                 var person = '<@' + trigger.user + '>';
                 var value = {};
                 var reply =  trigger.original_message;
@@ -269,11 +270,19 @@ module.exports = function(controller) {
             if (message.channel[0] == 'D') {
                 person = 'You';
             }
+            var action_payload;
+            if (trigger.actions[0].type === 'select') {
+                action_payload = trigger.actions[0].selected_options[0].name;
+            } else {
+                action_payload = trigger.actions[0].name;
+            }
+
             var value = JSON.parse(reply.attachments[2].actions[0].value);
 
             //console.log(JSON.stringify(reply.attachments[2]));
-            value[trigger.user] = parseInt(trigger.actions[0].name, 10);
-            //console.log(JSON.stringify(value));
+            value[trigger.user] = parseInt(action_payload, 10);
+            console.log('Updated value');
+            console.log(JSON.stringify(value));
 
             reply.attachments[2].actions[0].value = `${JSON.stringify(value)}`;
 

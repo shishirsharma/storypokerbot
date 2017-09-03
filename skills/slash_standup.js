@@ -79,7 +79,7 @@ module.exports = function(controller) {
                                 "pretext",
                                 "fields"
                             ],
-                            "callback_id": "select_point_dropdown",
+                            "callback_id": "select_point_action",
                             "attachment_type": "default",
                             "actions": [
                                 {
