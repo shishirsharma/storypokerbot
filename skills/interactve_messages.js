@@ -4,7 +4,7 @@ module.exports = function(controller) {
     // if the button action is 'action', trigger an event
     // if the button action is 'say', act as if user said that thing
     controller.on('interactive_message_callback', function(bot, trigger) {
-        // console.log(trigger);
+        console.log(trigger);
 
         // if (trigger.actions[0].name.match(/^action$/)) {
         //     controller.trigger(trigger.actions[0].value, [bot, trigger]);
@@ -148,7 +148,7 @@ module.exports = function(controller) {
                                 "pretext",
                                 "fields"
                             ],
-                            "callback_id": "select_point_dropdown",
+                            "callback_id": "select_point_action",
                             "attachment_type": "default",
                             "actions": [
                                 {
@@ -237,17 +237,17 @@ module.exports = function(controller) {
                             ]
                         }
                     ]
-                
-                
+
+
             }else if(trigger.actions[0].name.match(/^Dismiss$/)){
                 var person = '<@' + trigger.user + '>';
                 var reply = trigger.original_message;
                 reply.attachments = [];
                 reply.attachments.push({
                     "text": `${person} has dismissed`
-                }); 
+                });
             }
-            
+
             //console.log(JSON.stringify(reply));
 
             // console.log(reply);
@@ -272,15 +272,22 @@ module.exports = function(controller) {
             }
             var action_payload;
             if (trigger.actions[0].type === 'select') {
-                action_payload = trigger.actions[0].selected_options[0].name;
+                console.log('action_payload select');
+                action_payload = trigger.actions[0].selected_options[0].value;
+                console.log('action_payload');
+                console.log(trigger.actions[0].selected_options[0]);
             } else {
-                action_payload = trigger.actions[0].name;
+                console.log('action_payload button');
+                action_payload = trigger.actions[0].value;
+                console.log('action_payload');
+                console.log(trigger.actions[0]);
             }
 
             var value = JSON.parse(reply.attachments[2].actions[0].value);
 
-            //console.log(JSON.stringify(reply.attachments[2]));
-            value[trigger.user] = parseInt(action_payload, 10);
+            console.log('action_payload');
+            console.log(action_payload);
+            value[trigger.user] = action_payload;
             console.log('Updated value');
             console.log(JSON.stringify(value));
 
