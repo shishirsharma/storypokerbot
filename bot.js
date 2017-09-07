@@ -82,7 +82,7 @@ if (process.env.MONGO_URI) {
     var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
     bot_options.storage = mongoStorage;
 } else if (process.env.REDIS_URL) {
-    var redis_config = process.env.REDIS_URL;
+    var redis_config = {url: process.env.REDIS_URL};
     var redisStorage = require('botkit-storage-redis')(redis_config);
     bot_options.storage = redisStorage;
 } else {
