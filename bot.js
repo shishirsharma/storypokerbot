@@ -82,7 +82,7 @@ if (process.env.MONGO_URI) {
     var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
     bot_options.storage = mongoStorage;
 } else if (process.env.REDIS_URI) {
-    var redisStorage = require('botkit-storage-redis')({mongoUri: process.env.REDIS_URL});
+    var redisStorage = require('botkit-storage-redis')({url: process.env.REDIS_URL});
     bot_options.storage = redisStorage;
 } else {
     bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
