@@ -110,3 +110,9 @@ You can find full documentation for Botkit on our [GitHub page](https://github.c
 # About Botkit
 
 Botkit is a product of [Howdy](https://howdy.ai) and made in Austin, TX with the help of a worldwide community of botheads.
+
+
+# Credits
+
+* Playing Cards free vector icons designed by [Freepik](https://www.flaticon.com/authors/freepik) https://www.flaticon.com/free-icon/playing-cards_103237
+* 
