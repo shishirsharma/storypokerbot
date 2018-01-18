@@ -90,6 +90,10 @@ module.exports = function(controller) {
                                     "data_source": "static",
                                     "options": [
                                         {
+                                            "text": "0",
+                                            "value": "0"
+                                        },
+                                        {
                                             "text": "1",
                                             "value": "1"
                                         },
@@ -102,32 +106,28 @@ module.exports = function(controller) {
                                             "value": "3"
                                         },
                                         {
-                                            "text": "4",
-                                            "value": "4"
-                                        },
-                                        {
                                             "text": "5",
                                             "value": "5"
-                                        },
-                                        {
-                                            "text": "6",
-                                            "value": "6"
-                                        },
-                                        {
-                                            "text": "7",
-                                            "value": "7"
                                         },
                                         {
                                             "text": "8",
                                             "value": "8"
                                         },
                                         {
-                                            "text": "9",
-                                            "value": "9"
+                                            "text": "13",
+                                            "value": "13"
                                         },
                                         {
-                                            "text": "10",
-                                            "value": "10"
+                                            "text": "21",
+                                            "value": "21"
+                                        },
+                                        {
+                                            "text": "34",
+                                            "value": "34"
+                                        },
+                                        {
+                                            "text": "55",
+                                            "value": "55"
                                         }
                                     ]
                                 }
