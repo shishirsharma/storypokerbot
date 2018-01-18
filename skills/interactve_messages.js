@@ -1,3 +1,6 @@
+var debug = require('debug')('botkit:slash_command');
+var dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
+
 module.exports = function(controller) {
 
     // create special handlers for certain actions in buttons
@@ -5,6 +8,7 @@ module.exports = function(controller) {
     // if the button action is 'say', act as if user said that thing
     controller.on('interactive_message_callback', function(bot, trigger) {
         console.log(trigger);
+        dashbot.logIncoming(bot.identity, bot.team_info, trigger);
 
         // if (trigger.actions[0].name.match(/^action$/)) {
         //     controller.trigger(trigger.actions[0].value, [bot, trigger]);
@@ -34,6 +38,8 @@ module.exports = function(controller) {
         //         text: person + ' said, ' + trigger.actions[0].value,
         //     });
 
+        //     reply.channel = message.channel;
+        //     dashbot.logOutgoing(bot.identity, bot.team_info, reply);
         //     bot.replyInteractive(trigger, reply);
 
         //     controller.receiveMessage(bot, message);
@@ -251,6 +257,8 @@ module.exports = function(controller) {
             //console.log(JSON.stringify(reply));
 
             // console.log(reply);
+            reply.channel = message.channel;
+            dashbot.logOutgoing(bot.identity, bot.team_info, reply);
             bot.replyInteractive(trigger, reply);
 
             return false; // do not bubble event
@@ -299,6 +307,8 @@ module.exports = function(controller) {
             //console.log(JSON.stringify(reply));
 
             // console.log(reply);
+            reply.channel = message.channel;
+            dashbot.logOutgoing(bot.identity, bot.team_info, reply);
             bot.replyInteractive(trigger, reply);
 
             return false; // do not bubble event

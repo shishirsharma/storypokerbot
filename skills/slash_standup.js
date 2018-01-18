@@ -1,11 +1,12 @@
 const uuidv4 = require('uuid/v4');
 
 var debug = require('debug')('botkit:slash_command');
-
+var dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
 
 module.exports = function(controller) {
 
     controller.on('slash_command', function(bot, message) {
+        dashbot.logIncoming(bot.identity, bot.team_info, message);
 
         if (message.channel_name == 'directmessage') {
             bot.replyPrivate(message, "Uh oh! That didn't work. Try that command in a channel.");
@@ -20,7 +21,7 @@ module.exports = function(controller) {
                 console.log('playing pointing poker');
                 // console.log(message);
                 let value = {};
-                bot.replyPublic(message, {
+                let replyMessage = {
                     "text": `@${message.user_name} wants you to point story '${message.text}'`,
                     "attachments": [
                         {
@@ -171,7 +172,11 @@ module.exports = function(controller) {
                     "response_type": "ephemeral",
                     "delete_original": true,
                     "replace_original": true
-                });
+                };
+
+                replyMessage.channel = message.channel;
+                dashbot.logOutgoing(bot.identity, bot.team_info, replyMessage);
+                bot.replyPublic(message, replyMessage);
             },
             'default': function(){}
         };
