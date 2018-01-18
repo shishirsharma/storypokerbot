@@ -75,10 +75,10 @@ module.exports = function(controller) {
 
     });
 
-    controller.on('rtm:start', function(config) {
-        var bot = controller.spawn(config);
-        manager.start(bot);
-    });
+    // controller.on('rtm:start', function(config) {
+    //     var bot = controller.spawn(config);
+    //     manager.start(bot);
+    // });
 
     controller.on('update_team', function(bot, team) {
 
