@@ -2,4 +2,5 @@
 node_modules
 components/routes/_*
 .env
+.env.production
 .data
