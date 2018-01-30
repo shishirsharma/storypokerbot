@@ -94,6 +94,8 @@ var controller = Botkit.slackbot(bot_options);
 
 controller.startTicking();
 
+require('botkit-studio-metrics')(controller);
+
 // Set up an Express-powered webserver to expose oauth and webhook endpoints
 var webserver = require(__dirname + '/components/express_webserver.js')(controller);
 
