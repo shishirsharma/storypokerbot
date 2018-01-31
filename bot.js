@@ -115,8 +115,6 @@ require(__dirname + '/components/onboarding.js')(controller);
 // Enable Dashbot.io plugin
 require(__dirname + '/components/plugin_dashbot.js')(controller);
 
-// enable advanced botkit studio metrics
-require('botkit-studio-metrics')(controller);
 
 var normalizedPath = require("path").join(__dirname, "skills");
 require("fs").readdirSync(normalizedPath).forEach(function(file) {
