@@ -112,6 +112,9 @@ require(__dirname + '/components/onboarding.js')(controller);
 // // Reconnect all pre-registered bots
 // rtm_manager.reconnect();
 
+// enable advanced botkit studio metrics
+require('botkit-studio-metrics')(controller);
+
 // Enable Dashbot.io plugin
 require(__dirname + '/components/plugin_dashbot.js')(controller);
 
