@@ -258,13 +258,11 @@ module.exports = function(controller) {
 
             // console.log(reply);
             reply.channel = message.channel;
-            dashbot.logOutgoing(bot.identity, bot.team_info, reply);
+            // dashbot.logOutgoing(bot.identity, bot.team_info, reply);
             bot.replyInteractive(trigger, reply);
 
             return false; // do not bubble event
-        }
-        if (trigger.callback_id.match(/^select_point_action$/)) {
-
+        } else if (trigger.callback_id.match(/^select_point_action$/)) {
             var message = {
                 user: trigger.user,
                 channel: trigger.channel,
@@ -308,7 +306,7 @@ module.exports = function(controller) {
 
             // console.log(reply);
             reply.channel = message.channel;
-            dashbot.logOutgoing(bot.identity, bot.team_info, reply);
+            // dashbot.logOutgoing(bot.identity, bot.team_info, reply);
             bot.replyInteractive(trigger, reply);
 
             return false; // do not bubble event
@@ -317,4 +315,4 @@ module.exports = function(controller) {
     });
 
 
-}
+};

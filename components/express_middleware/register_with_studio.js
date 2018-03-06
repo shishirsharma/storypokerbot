@@ -16,7 +16,7 @@ module.exports = function(webserver, controller) {
                     url: host,
                     version: controller.version(),
                     ts: new Date(),
-                }
+                };
 
                 request({
                     method: 'post',
