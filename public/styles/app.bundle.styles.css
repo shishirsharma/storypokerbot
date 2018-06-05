@@ -3819,6 +3819,9 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat','Roboto',FreeSans,Arimo,"Droid Sans",Helvetica,Arial,sans-serif; }
 
 img.splash-img {
-  height: 10vh;
+  height: 15vh;
   width: auto;
   bottom: 60vh; }
+
+.splash {
+  top: 85px; }
