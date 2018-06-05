@@ -6,6 +6,22 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~purecss/build/grids-responsive-min";
 @import "./marketing";
 
+
+/*
+    When setting the primary font stack, apply it to the Pure grid units along
+    with `html`, `button`, `input`, `select`, and `textarea`. Pure Grids use
+    specific font stacks to ensure the greatest OS/browser compatibility.
+*/
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"] {
+    /* Set your content font stack here: */
+    font-family: 'Roboto',FreeSans,Arimo,"Droid Sans",Helvetica,Arial,sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat','Roboto',FreeSans,Arimo,"Droid Sans",Helvetica,Arial,sans-serif;
+}
+
 img.splash-img {
     height: 10vh;
     width: auto;
