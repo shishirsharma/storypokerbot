@@ -1,0 +1,13 @@
+$fa-font-path: "~font-awesome/fonts";
+
+@import "~font-awesome/scss/font-awesome";
+@import "~purecss/build/pure-min";
+@import "~purecss/build/grids-responsive-min";
+@import "~purecss/build/grids-responsive-min";
+@import "./marketing";
+
+img.splash-img {
+    height: 10vh;
+    width: auto;
+    bottom: 60vh;
+}
