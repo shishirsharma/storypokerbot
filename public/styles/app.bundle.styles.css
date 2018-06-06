@@ -3825,3 +3825,7 @@ img.splash-img {
 
 .splash {
   top: 85px; }
+
+.ribbon a,
+.footer a {
+  color: white; }
