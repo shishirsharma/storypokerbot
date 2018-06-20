@@ -78,13 +78,24 @@ label {
 }
 
 a.pure-button-primary {
-    background: white;
+    background: none;
     color: #1f8dd6;
     border-radius: 5px;
     font-size: 120%;
+    border: 2px solid;
 }
 
+.pure-button.pure-button-primary {
+    padding: 0.5em 1em;
+}
 
+.home-menu li a.pure-button-primary:hover, .home-menu li a.pure-button-primary:focus {
+    background: none;
+    border: 2px solid;
+    color: black;
+    border-color: #AECFE5;
+    background: #AECFE5;
+}
 /*
  * -- MENU STYLES --
  * I want to customize how my .pure-menu looks at the top of the page

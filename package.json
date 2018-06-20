@@ -5,6 +5,7 @@
     "main": "bot.js",
     "scripts": {
         "start": "node bot.js"
+        "build": "webpack"
     },
     "dependencies": {
         "body-parser": "^1.15.2",
@@ -19,6 +20,7 @@
         "express-hbs": "^1.0.4",
         "font-awesome": "^4.7.0",
         "node-env-file": "^0.1.8",
+        "prismjs": "^1.14.0",
         "purecss": "^1.0.0",
         "querystring": "^0.2.0",
         "request": "^2.79.0",

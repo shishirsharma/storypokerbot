@@ -5,7 +5,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~purecss/build/grids-responsive-min";
 @import "~purecss/build/grids-responsive-min";
 @import "./marketing";
-
+@import "~prismjs/themes/prism-coy";
 
 /*
     When setting the primary font stack, apply it to the Pure grid units along
@@ -15,7 +15,7 @@ $fa-font-path: "~font-awesome/fonts";
 html, button, input, select, textarea,
 .pure-g [class *= "pure-u"] {
     /* Set your content font stack here: */
-    font-family: 'Roboto',FreeSans,Arimo,"Droid Sans",Helvetica,Arial,sans-serif;
+    font-family: 'Helvetica Neue',Helvetica,'Roboto',FreeSans,Arimo,"Droid Sans",Helvetica,Arial,sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -36,3 +36,75 @@ img.splash-img {
 .footer a {
     color: white;
 }
+
+/* // // Simple css for code and pre */
+/* pre { */
+/*     font-family: "Courier 10 Pitch", Courier, monospace; */
+/*     font-size: 95%; */
+/*     line-height: 140%; */
+/*     white-space: pre; */
+/*     white-space: pre-wrap; */
+/*     white-space: -moz-pre-wrap; */
+/*     white-space: -o-pre-wrap; */
+/* } */
+
+/* code { */
+/*     font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace; */
+/*     font-size: 95%; */
+/*     line-height: 140%; */
+/*     white-space: pre; */
+/*     white-space: pre-wrap; */
+/*     white-space: -moz-pre-wrap; */
+/*     white-space: -o-pre-wrap; */
+/*     background: #faf8f0; */
+/* } */
+
+/* #content code { */
+/*     display: block; */
+/*     padding: 0.5em 1em; */
+/*     border: 1px solid #bebab0; */
+/* } */
+
+
+/* @import url(https://cdn.rawgit.com/google/code-prettify/master/styles/desert.css); */
+/* $lightGray: #fafafa; */
+/* $medBlue: #9baecf; */
+/* $char: #292929; */
+
+/* body { */
+/*     width: 50%; */
+/*     margin: 0 auto; */
+/*     @media (max-width: 650px) { */
+/*         width: 75%; */
+/*     } */
+/*     @media (max-width: 430px) { */
+/*         width: 100%; */
+/*     } */
+/* } */
+
+/* code, */
+/* .code, */
+/* pre { */
+/*     font-family: 'Source Code Pro'; */
+/*     background: $char; */
+/*     color: $lightGray; */
+/*     font-size: 16px; */
+/*     padding: 0; */
+/*     padding: 10px; */
+/*     &:before { */
+/*         display: block; */
+/*         width: calc(100%); */
+/*         margin-left: -3px; */
+/*         margin-top: -3px; */
+/*         padding: 3px; */
+/*         text-transform: uppercase; */
+/*         content: attr(data-lang); */
+/*         background: $medBlue; */
+/*     } */
+/*     .o { */
+/*         color: orange; */
+/*     } */
+/*     .w { */
+/*         color: white; */
+/*     } */
+/* } */
