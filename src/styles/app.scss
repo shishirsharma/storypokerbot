@@ -5,7 +5,11 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~purecss/build/grids-responsive-min";
 @import "~purecss/build/grids-responsive-min";
 @import "./marketing";
+@import "~slick-carousel/slick/slick";
+//@import "~slick-carousel/slick/slick-theme";
+//@import "./slick-slide";
 @import "~prismjs/themes/prism-coy";
+
 
 /*
     When setting the primary font stack, apply it to the Pure grid units along
@@ -108,3 +112,36 @@ img.splash-img {
 /*         color: white; */
 /*     } */
 /* } */
+
+
+.content.slider {
+    position: relative;
+}
+
+.fading-left {
+    position: absolute;
+    background: linear-gradient(to right, white, rgba(255, 255, 255, 0));
+    float: left;
+    width: 30%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.fading-right {
+    position: absolute;
+    background: linear-gradient(to left, white, rgba(255, 255, 255, 0));
+    float: right;
+    width: 30%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+
+
+.customer-logos .slide img {
+    width: auto;
+    height: 3.5rem;
+}

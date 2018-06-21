@@ -19,11 +19,13 @@
         "express": "^4.14.0",
         "express-hbs": "^1.0.4",
         "font-awesome": "^4.7.0",
+        "jquery": "^3.3.1",
         "node-env-file": "^0.1.8",
         "prismjs": "^1.14.0",
         "purecss": "^1.0.0",
         "querystring": "^0.2.0",
         "request": "^2.79.0",
+        "slick-carousel": "^1.8.1",
         "wordfilter": "^0.2.6"
     },
     "devDependencies": {
