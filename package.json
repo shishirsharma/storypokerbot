@@ -4,7 +4,7 @@
     "description": "A Slack bot to play planning poker.",
     "main": "bot.js",
     "scripts": {
-        "start": "node bot.js"
+        "start": "node bot.js",
         "build": "webpack"
     },
     "dependencies": {
