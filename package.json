@@ -5,7 +5,7 @@
     "main": "bot.js",
     "scripts": {
         "start": "node bot.js",
-        "build": "webpack"
+        "build": "webpack -w"
     },
     "dependencies": {
         "body-parser": "^1.15.2",
