@@ -321,7 +321,7 @@ module.exports = function(controller) {
   // Sign up for a free key here: https://www.dashbot.io/ to see your bot analytics in real time.
   if (process.env.MIXPANEL_API_KEY) {
     // Setup mixpanel
-    botkit_mixpanel_metrics(controller, {mixpanel_api_key: process.env.MIXPANEL_API_KEY, debug: true, always_update: true});
+    botkit_mixpanel_metrics(controller, {mixpanel_api_key: process.env.MIXPANEL_API_KEY, debug: false, always_update: true});
     // // grab the Mixpanel factory
     // var Mixpanel = require('mixpanel');
 
