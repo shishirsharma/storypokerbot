@@ -58,6 +58,8 @@ try {
     console.log('Warning: .env file not found hope environment is set some other way');
 }
 
+// var environment = process.env.NODE_ENV;
+
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
   console.log('Error: Specify clientId clientSecret and PORT in environment');
   usage_tip();
@@ -89,6 +91,7 @@ if (process.env.MONGO_URI) {
     bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
 }
 
+
 // Create the Botkit controller, which controls all instances of the bot.
 var controller = Botkit.slackbot(bot_options);
 
@@ -117,6 +120,8 @@ require('botkit-studio-metrics')(controller);
 
 // Enable Dashbot.io plugin
 require(__dirname + '/components/plugin_dashbot.js')(controller);
+// Enable Dashbot.io plugin
+require(__dirname + '/components/plugin_mixpanel.js')(controller);
 
 
 var normalizedPath = require("path").join(__dirname, "skills");
