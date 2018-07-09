@@ -70,12 +70,13 @@ var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
 
 var bot_options = {
-    clientId: process.env.clientId,
-    clientSecret: process.env.clientSecret,
-    debug: true,
-    scopes: ['bot', 'commands'],
-    studio_token: process.env.studio_token,
-    studio_command_uri: process.env.studio_command_uri
+  clientId: process.env.clientId,
+  clientSecret: process.env.clientSecret,
+  clientSigningSecret: process.env.clientSigningSecret,
+  debug: true,
+  scopes: ['bot', 'commands'],
+  studio_token: process.env.studio_token,
+  studio_command_uri: process.env.studio_command_uri
 };
 
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.

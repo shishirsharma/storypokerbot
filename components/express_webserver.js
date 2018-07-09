@@ -6,7 +6,16 @@ var debug = require('debug')('botkit:webserver');
 module.exports = function(controller) {
 
 
-    var webserver = express();
+  var webserver = express();
+  // webserver.use(function(req, res, next) {
+  //   req.rawBody = '';
+
+  //   req.on('data', function(chunk) {
+  //     req.rawBody += chunk;
+  //   });
+
+  //   next();
+  // });
     webserver.use(bodyParser.json());
     webserver.use(bodyParser.urlencoded({ extended: true }));
 
@@ -17,7 +26,6 @@ module.exports = function(controller) {
     });
 
     webserver.use(express.static('public'));
-
 
     webserver.listen(process.env.PORT || 3000, null, function() {
 
