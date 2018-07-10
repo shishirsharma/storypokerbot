@@ -337,6 +337,7 @@ module.exports = function(controller) {
       reply.attachments[3] = {
         "text": `${Object.keys(value).map(u => '<@' + u + '>').join(', ')} has pointed`
       };
+
       //console.log(JSON.stringify(reply));
 
       // console.log(reply);
