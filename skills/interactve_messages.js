@@ -87,7 +87,7 @@ module.exports = function(controller) {
           ]
         }];
         let graph = {
-          '1': 0, '2': 0, '3': 0, '5': 0, '8': 0,
+          '0': 0, '1': 0, '2': 0, '3': 0, '5': 0, '8': 0,
           '13': 0, '21': 0, '34': 0, '55': 0
         };
         Object.keys(value).forEach(function(key, index) {
@@ -123,7 +123,9 @@ module.exports = function(controller) {
         //   `chts=000000,12`;
         // http://chart.googleapis.com/chart?cht=bvg&chs=250x150&chd=s:Monkeys&chxt=x,y&chxs=0,ff0000,12,0,lt|1,0000ff,10,1,lt
         // https://chart.googleapis.com/chart?cht=bhg&chs=200x125&chd=s:el,or&chco=4d89f9,c6d9fd
-        reply.attachments[0].image_url = `https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:${graph_data.join(',')}&chdl=Points&chco=5131C9&chxt=x&chxl=0:|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11`
+
+        reply.attachments[0].image_url = `https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:${graph_data.join(',')}&chdl=Points&chco=5131C9&chxt=x&chxl=0:|0|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11`
+
         console.log(reply.attachments);
       } else if(trigger.actions[0].name.match(/^Repoint$/)) {
         var person = '<@' + trigger.user + '>';
