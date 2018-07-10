@@ -334,9 +334,9 @@ module.exports = function(controller) {
       reply.attachments[2].actions[0].value = `${JSON.stringify(value)}`;
       let user_count = Object.keys(value).length;
       reply.attachments[0].pretext = `Total Pointed: \`${user_count}\``;
-      reply.attachments.push({
-        "text": `${person} has pointed`
-      });
+      reply.attachments[3] = {
+        "text": `${Object.keys(value).map(u => '<@' + u + '>').join(', ')} has pointed`
+      }
       //console.log(JSON.stringify(reply));
 
       // console.log(reply);
