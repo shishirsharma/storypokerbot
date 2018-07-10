@@ -3,6 +3,9 @@
   "version": "0.0.2",
   "description": "A Slack bot to play planning poker.",
   "main": "bot.js",
+  "engines": {
+    "node": "8.x"
+  },
   "scripts": {
     "start": "node bot.js",
     "debug": "NODE_ENV=dev DEBUG=* node --inspect=127.0.0.1:9227 bot.js",
