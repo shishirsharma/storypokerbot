@@ -73,6 +73,7 @@ var bot_options = {
   clientId: process.env.clientId,
   clientSecret: process.env.clientSecret,
   clientSigningSecret: process.env.clientSigningSecret,
+  clientVerificationToken: process.env.clientVerificationToken,
   debug: true,
   scopes: ['bot', 'commands'],
   studio_token: process.env.studio_token,
