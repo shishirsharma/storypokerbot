@@ -78,6 +78,14 @@ module.exports = function(controller) {
               "value": `${JSON.stringify({})}`
             },
             {
+              "name": "Done",
+              "text": "Done",
+              "type": "button",
+              "style": "default",
+              "value": `${JSON.stringify(value)}`
+
+            },
+            {
               "name": "Dismiss",
               "text": "Dismiss",
               "type": "button",
@@ -85,6 +93,64 @@ module.exports = function(controller) {
               "value": "Dismiss"
             }
           ]
+        }];
+        let graph = {
+          '0': 0, '1': 0, '2': 0, '3': 0, '5': 0, '8': 0,
+          '13': 0, '21': 0, '34': 0, '55': 0
+        };
+        Object.keys(value).forEach(function(key, index) {
+          graph[value[key]] += 1;
+          reply.attachments.push({
+            text: `<@${key}> pointed: ${value[key]}`
+          });
+        });
+        let graph_string = ['Points ▼ │ Count ►','──┬───'];
+        let graph_data = [];
+        Object.keys(graph).forEach(function(point, index) {
+          let count = graph[point];
+          let count_str = count === 0 ? '' : count;
+          graph_data.push(count);
+          graph_string.push(point.padStart(2) + '│' + '█'.repeat(count) + ' ' + count_str);
+        });
+        graph_string.push('──┴───');
+
+        // reply.attachments[0].pretext = `\`\`\`${graph_string.join('\n')}\`\`\``;
+        // `http://chart.apis.google.com/chart?chs=480x256&cht=bvs&chtt=LivePreview&chd=s:CDDEFH,Wps679&chco=ff0000,0000ff&chdl=sales|visits&chxl=0:|jan|feb|mar|apr|may|jun|&chxt=x`
+        // reply.attachments[0].image_url = `http://chart.apis.google.com/chart?` +
+        //   `cht=bvs&` +
+        //   `chs=160x160&` +
+        //   `chd=s:AAAAAAAzA&` +
+        //   `chdl=Points&` +
+        //   `chco=5131C9&` +
+        //   `chxt=x&` +
+        //   `chxl=0:|1|2|3|5|8|13|21|34|55&` +
+        //   `chxs=0,000000,8,-1&` +
+        //   `chf=bg,s,FFFFFF|c,s,FFFFFF&` +
+        //   `chbh=a&` +
+        //   `chtt=Points%20Histogram&` +
+        //   `chts=000000,12`;
+        // http://chart.googleapis.com/chart?cht=bvg&chs=250x150&chd=s:Monkeys&chxt=x,y&chxs=0,ff0000,12,0,lt|1,0000ff,10,1,lt
+        // https://chart.googleapis.com/chart?cht=bhg&chs=200x125&chd=s:el,or&chco=4d89f9,c6d9fd
+
+        reply.attachments[0].image_url = `https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:${graph_data.join(',')}&chdl=Points&chco=5131C9&chxt=x&chxl=0:|0|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11`
+
+        console.log(reply.attachments);
+      } else if(trigger.actions[0].name.match(/^Done$/)) {
+        var reply = trigger.original_message;
+
+
+        var value = JSON.parse(trigger.actions[0].value);
+
+        reply.attachments = [ {
+          "fallback": "Pre-filled because you have actions in your attachment.",
+          "color": "#bdc3c7",
+          "mrkdwn_in": [
+            "text",
+            "pretext",
+            "fields"
+          ],
+          "callback_id": "select_poker_action",
+          "attachment_type": "default"
         }];
         let graph = {
           '0': 0, '1': 0, '2': 0, '3': 0, '5': 0, '8': 0,
