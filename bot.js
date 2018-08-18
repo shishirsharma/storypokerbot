@@ -1,61 +1,61 @@
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-           ______     ______     ______   __  __     __     ______
-          /\  == \   /\  __ \   /\__  _\ /\ \/ /    /\ \   /\__  _\
-          \ \  __<   \ \ \/\ \  \/_/\ \/ \ \  _"-.  \ \ \  \/_/\ \/
-           \ \_____\  \ \_____\    \ \_\  \ \_\ \_\  \ \_\    \ \_\
-            \/_____/   \/_____/     \/_/   \/_/\/_/   \/_/     \/_/
+  ______     ______     ______   __  __     __     ______
+  /\  == \   /\  __ \   /\__  _\ /\ \/ /    /\ \   /\__  _\
+  \ \  __<   \ \ \/\ \  \/_/\ \/ \ \  _"-.  \ \ \  \/_/\ \/
+  \ \_____\  \ \_____\    \ \_\  \ \_\ \_\  \ \_\    \ \_\
+  \/_____/   \/_____/     \/_/   \/_/\/_/   \/_/     \/_/
 
 
-This is a sample Slack bot built with Botkit.
+  This is a sample Slack bot built with Botkit.
 
-This bot demonstrates many of the core features of Botkit:
+  This bot demonstrates many of the core features of Botkit:
 
-* Connect to Slack using the real time API
-* Receive messages based on "spoken" patterns
-* Reply to messages
-* Use the conversation system to ask questions
-* Use the built in storage system to store and retrieve information
+  * Connect to Slack using the real time API
+  * Receive messages based on "spoken" patterns
+  * Reply to messages
+  * Use the conversation system to ask questions
+  * Use the built in storage system to store and retrieve information
   for a user.
 
-# RUN THE BOT:
+  # RUN THE BOT:
 
   Create a new app via the Slack Developer site:
 
-    -> http://api.slack.com
+  -> http://api.slack.com
 
   Get a Botkit Studio token from Botkit.ai:
 
-    -> https://studio.botkit.ai/
+  -> https://studio.botkit.ai/
 
   Run your bot from the command line:
 
-    clientId=<MY SLACK TOKEN> clientSecret=<my client secret> PORT=<3000> studio_token=<MY BOTKIT STUDIO TOKEN> node bot.js
+  clientId=<MY SLACK TOKEN> clientSecret=<my client secret> PORT=<3000> studio_token=<MY BOTKIT STUDIO TOKEN> node bot.js
 
-# USE THE BOT:
+  # USE THE BOT:
 
-    Navigate to the built-in login page:
+  Navigate to the built-in login page:
 
-    https://<myhost.com>/login
+  https://<myhost.com>/login
 
-    This will authenticate you with Slack.
+  This will authenticate you with Slack.
 
-    If successful, your bot will come online and greet you.
+  If successful, your bot will come online and greet you.
 
 
-# EXTEND THE BOT:
+  # EXTEND THE BOT:
 
   Botkit has many features for building cool and useful bots!
 
   Read all about it here:
 
-    -> http://howdy.ai/botkit
+  -> http://howdy.ai/botkit
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 var env = require('node-env-file');
 try {
-    env(__dirname + '/.env');
+  env(__dirname + '/.env');
 } catch (err) {
-    console.log('Warning: .env file not found hope environment is set some other way');
+  console.log('Warning: .env file not found hope environment is set some other way');
 }
 
 // var environment = process.env.NODE_ENV;
@@ -83,14 +83,14 @@ var bot_options = {
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.
 // Mongo is automatically configured when deploying to Heroku
 if (process.env.MONGO_URI) {
-    var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
-    bot_options.storage = mongoStorage;
+  var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
+  bot_options.storage = mongoStorage;
 } else if (process.env.REDIS_URL) {
-    var redis_config = {url: process.env.REDIS_URL};
-    var redisStorage = require('botkit-storage-redis')(redis_config);
-    bot_options.storage = redisStorage;
+  var redis_config = {url: process.env.REDIS_URL};
+  var redisStorage = require('botkit-storage-redis')(redis_config);
+  bot_options.storage = redisStorage;
 } else {
-    bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
+  bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
 }
 
 
@@ -140,39 +140,45 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 // You can tie into the execution of the script using the functions
 // controller.studio.before, controller.studio.after and controller.studio.validate
 if (process.env.studio_token) {
-    controller.on('direct_message,direct_mention,mention', function(bot, message) {
+  controller.on('direct_message,direct_mention,mention', function(bot, message) {
+    controller.storage.teams.get(message.team, function(err, team_data) {
+      if(!team_data.paused) {
         controller.studio.runTrigger(bot, message.text, message.user, message.channel).then(function(convo) {
-            if (!convo) {
-                // no trigger was matched
-                // If you want your bot to respond to every message,
-                // define a 'fallback' script in Botkit Studio
-                // and uncomment the line below.
-                // controller.studio.run(bot, 'fallback', message.user, message.channel);
-            } else {
-                // set variables here that are needed for EVERY script
-                // use controller.studio.before('script') to set variables specific to a script
-                convo.setVar('current_time', new Date());
-            }
+          if (!convo) {
+            // no trigger was matched
+            // If you want your bot to respond to every message,
+            // define a 'fallback' script in Botkit Studio
+            // and uncomment the line below.
+            // controller.studio.run(bot, 'fallback', message.user, message.channel);
+          } else {
+            // set variables here that are needed for EVERY script
+            // use controller.studio.before('script') to set variables specific to a script
+            convo.setVar('current_time', new Date());
+          }
         }).catch(function(err) {
-            bot.reply(message, 'I experienced an error with a request to Botkit Studio: ' + err);
-            debug('Botkit Studio: ', err);
+          bot.reply(message, 'I experienced an error with a request to Botkit Studio: ' + err);
+          debug('Botkit Studio: ', err);
         });
+      } else {
+        debug('Botkit Studio: has been paused by dashbot');
+      }
     });
+  });
 } else {
-    console.log('~~~~~~~~~~');
-    console.log('NOTE: Botkit Studio functionality has not been enabled');
-    console.log('To enable, pass in a studio_token parameter with a token from https://studio.botkit.ai/');
+  console.log('~~~~~~~~~~');
+  console.log('NOTE: Botkit Studio functionality has not been enabled');
+  console.log('To enable, pass in a studio_token parameter with a token from https://studio.botkit.ai/');
 }
 
 
 
 
 function usage_tip() {
-    console.log('~~~~~~~~~~');
-    console.log('Botkit Starter Kit');
-    console.log('Execute your bot application like this:');
-    console.log('clientId=<MY SLACK CLIENT ID> clientSecret=<MY CLIENT SECRET> PORT=3000 studio_token=<MY BOTKIT STUDIO TOKEN> node bot.js');
-    console.log('Get Slack app credentials here: https://api.slack.com/apps')
-    console.log('Get a Botkit Studio token here: https://studio.botkit.ai/')
-    console.log('~~~~~~~~~~');
+  console.log('~~~~~~~~~~');
+  console.log('Botkit Starter Kit');
+  console.log('Execute your bot application like this:');
+  console.log('clientId=<MY SLACK CLIENT ID> clientSecret=<MY CLIENT SECRET> PORT=3000 studio_token=<MY BOTKIT STUDIO TOKEN> node bot.js');
+  console.log('Get Slack app credentials here: https://api.slack.com/apps')
+  console.log('Get a Botkit Studio token here: https://studio.botkit.ai/')
+  console.log('~~~~~~~~~~');
 }

@@ -5,8 +5,32 @@ module.exports = function(webserver, controller) {
   var handler = {
     dashbotPause: function(req, res){
       debug('req', req.body);
-      res.status(200);
+      if (process.env.DASHBOT_API_KEY) {
+        let payload = req.body;
+        let teamId = payload.teamId;
+        let channelId = payload.channelId;
+        let paused = payload.paused;
+        controller.storage.teams.get(teamId, function(error, team_data) {
+          if (error) {
+            console.log('unable to pause team');
+            // reject(error);
+            return;
+          }
+          team_data.paused = paused;
+          controller.storage.teams.save(team_data, function(error) {
+            if (error) {
+              console.log('unable to pause team');
+              // reject(error);
+              return;
+            }
+            debug('Team has been paused by dashbot');
+          });
+        });
 
+      }
+      res.status(200);
+      res.json({ ok: true });
+      return;
     },
     dashbotReceive: function(req, res){
       debug('req', req.body);
@@ -41,6 +65,7 @@ module.exports = function(webserver, controller) {
         }
       }
       res.status(200);
+      res.json({ ok: true });
       return;
     },
     login: function(req, res) {
