@@ -15,7 +15,7 @@ module.exports = function(controller) {
 
         var slash_commands = {
             '/standup': function() {
-                bot.replyPublic(message, "Ok, I am staring a stand up <!here> in the channel.");
+                bot.replyPublic(message, "Ok, I am starting a stand up <!here> in the channel.");
             },
             '/pointstory': function() {
                 console.log('playing pointing poker');
