@@ -9,6 +9,7 @@
     "build": "webpack -w"
   },
   "dependencies": {
+    "@sentry/node": "4.5.3",
     "body-parser": "^1.15.2",
     "botkit": "^0.6.15",
     "botkit-mixpanel": "git+https://git@github.com/shishirsharma/botkit-mixpanel.git#e4921a7aa7d0836aa40ea4d930f601cfb1f47776",

@@ -389,7 +389,13 @@ module.exports = function(controller) {
         console.log(trigger.actions[0]);
       }
 
-      var value = JSON.parse(reply.attachments[2].actions[0].value);
+      let value = {};
+
+      try {
+        value = JSON.parse(reply.attachments[2].actions[0].value);
+      } catch(error) {
+        console.log('Value error reply.attachments[2].actions:', reply.attachments[2].actions);
+      }
 
       console.log('action_payload');
       console.log(action_payload);

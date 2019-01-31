@@ -2,11 +2,27 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var querystring = require('querystring');
 var debug = require('debug')('botkit:webserver');
+const Sentry = require('@sentry/node');
+
 
 module.exports = function(controller) {
 
 
+  if (!process.env.SENTRY_ENVIRONMENT) {
+    process.env.SENTRY_ENVIRONMENT = 'development';
+  }
+
+
   var webserver = express();
+
+
+  if (process.env.SENTRY_DSN) {
+    Sentry.init({ dsn: process.env.SENTRY_DSN });
+
+    // The request handler must be the first middleware on the app
+    webserver.use(Sentry.Handlers.requestHandler());
+  }
+
   // webserver.use(function(req, res, next) {
   //   req.rawBody = '';
 
