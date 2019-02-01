@@ -124,6 +124,8 @@ require('botkit-studio-metrics')(controller);
 require(__dirname + '/components/plugin_dashbot.js')(controller);
 // Enable Dashbot.io plugin
 require(__dirname + '/components/plugin_mixpanel.js')(controller);
+// Enable internal tracking
+require(__dirname + '/components/plugin_internal_tracking.js')(controller);
 
 
 var normalizedPath = require("path").join(__dirname, "skills");
