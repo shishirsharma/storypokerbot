@@ -279,7 +279,6 @@ let botkit_internal_tracking = function(controller, options) {
         // mixpanel.people.set(message.user, payload, {
         //   $ignore_time: true
         // });
-        console.log('Send user shishir', payload);
 
         controller.storage.users.save(payload);
 
