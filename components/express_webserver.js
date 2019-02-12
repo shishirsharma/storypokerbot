@@ -18,7 +18,10 @@ module.exports = function(controller) {
 
 
   if (process.env.SENTRY_DSN) {
-    Sentry.init({ dsn: process.env.SENTRY_DSN });
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+      release: process.env.HEROKU_RELEASE_VERSION
+    });
 
     // The request handler must be the first middleware on the app
     webserver.use(Sentry.Handlers.requestHandler());
