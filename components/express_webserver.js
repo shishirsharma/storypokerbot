@@ -22,6 +22,8 @@ module.exports = function(controller) {
 
     // The request handler must be the first middleware on the app
     webserver.use(Sentry.Handlers.requestHandler());
+    webserver.use(Sentry.Handlers.errorHandler());
+
     console.log('Sentry init with dsn:', process.env.SENTRY_DSN);
   }
 
