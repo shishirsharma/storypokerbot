@@ -11,6 +11,7 @@ module.exports = function(controller) {
   if (!process.env.SENTRY_ENVIRONMENT) {
     process.env.SENTRY_ENVIRONMENT = 'development';
   }
+  console.log('Using Sentry environment', process.env.SENTRY_ENVIRONMENT);
 
 
   var webserver = express();
@@ -21,6 +22,7 @@ module.exports = function(controller) {
 
     // The request handler must be the first middleware on the app
     webserver.use(Sentry.Handlers.requestHandler());
+    console.log('Sentry init with dsn:', process.env.SENTRY_DSN);
   }
 
   // webserver.use(function(req, res, next) {
