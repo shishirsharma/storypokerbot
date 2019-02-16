@@ -27,6 +27,14 @@ module.exports = function(controller) {
     webserver.use(Sentry.Handlers.requestHandler());
     webserver.use(Sentry.Handlers.errorHandler());
 
+    // Optional fallthrough error handler
+    webserver.use(function onError(err, req, res, next) {
+      // The error id is attached to `res.sentry` to be returned
+      // and optionally displayed to the user for support.
+      res.statusCode = 500;
+      res.end(res.sentry + '\n');
+    });
+
     console.log('Sentry init with dsn:', process.env.SENTRY_DSN);
   }
 
