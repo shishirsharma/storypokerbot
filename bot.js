@@ -80,22 +80,44 @@ var bot_options = {
   studio_command_uri: process.env.studio_command_uri
 };
 
-// Use a mongo database if specified, otherwise store in a JSON file local to the app.
-// Mongo is automatically configured when deploying to Heroku
-if (process.env.MONGO_URI) {
-  var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
+var db;
+
+// Use a mongo database if specified, otherwise store in a JSON file
+// local to the app. Mongo is automatically configured when deploying
+// to Heroku
+
+if (process.env.MONGODB_URI) {
+  var mongoStorage = require('botkit-storage-mongo')({
+    mongoUri: process.env.MONGODB_URI,
+    tables: ['games']
+  });
   bot_options.storage = mongoStorage;
-} else if (process.env.REDIS_URL) {
-  var redis_config = {url: process.env.REDIS_URL};
-  var redisStorage = require('botkit-storage-redis')(redis_config);
-  bot_options.storage = redisStorage;
+  db = require('monk')(process.env.MONGODB_URI);
 } else {
-  bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
+  console.log('Error: Specify mongodb_uri in environment');
+  usage_tip();
+  process.exit(1);
 }
+
+// if (process.env.REDIS_URL) {
+//   var redis_config = {
+//     url: process.env.REDIS_URL,
+//     methods: ['games']
+//   };
+//   var redisStorage = require('botkit-storage-redis')(redis_config);
+//   bot_options.storage = redisStorage;
+// } else {
+//   bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
+// }
 
 
 // Create the Botkit controller, which controls all instances of the bot.
 var controller = Botkit.slackbot(bot_options);
+
+if(db) {
+  // Make db available with controller
+  controller.db = db;
+}
 
 controller.startTicking();
 
@@ -118,7 +140,7 @@ require(__dirname + '/components/onboarding.js')(controller);
 // rtm_manager.reconnect();
 
 // enable advanced botkit studio metrics
-require('botkit-studio-metrics')(controller);
+// require('botkit-studio-metrics')(controller);
 
 // Enable Dashbot.io plugin
 require(__dirname + '/components/plugin_dashbot.js')(controller);
