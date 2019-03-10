@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node bot.js",
     "debug": "NODE_ENV=dev DEBUG=* node --inspect=127.0.0.1:9227 bot.js",
-    "build": "webpack -w"
+    "build": "webpack -w",
+    "heroku-postbuild": "echo Skip build on Heroku"
   },
   "dependencies": {
     "@sentry/node": "^4.5.3",
@@ -61,5 +62,6 @@
     "chatbots",
     "slack"
   ],
-  "license": "ISC"
+  "license": "ISC",
+  "heroku-run-build-script": true
 }
