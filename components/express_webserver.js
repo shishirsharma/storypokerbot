@@ -47,31 +47,33 @@ module.exports = function(controller) {
 
   //   next();
   // });
-    webserver.use(bodyParser.json());
-    webserver.use(bodyParser.urlencoded({ extended: true }));
+  webserver.use(bodyParser.json());
+  webserver.use(bodyParser.urlencoded({ extended: true }));
 
-    // import express middlewares that are present in /components/express_middleware
-    var normalizedPath = require("path").join(__dirname, "express_middleware");
-    require("fs").readdirSync(normalizedPath).forEach(function(file) {
-        require("./express_middleware/" + file)(webserver, controller);
-    });
+  // import express middlewares that are present in /components/express_middleware
+  var normalizedPath = require("path").join(__dirname, "express_middleware");
+  require("fs").readdirSync(normalizedPath).forEach(function(file) {
+    if(!file.match(/^\./)) {
+      require("./express_middleware/" + file)(webserver, controller);
+    }
+  });
 
-    webserver.use(express.static('public'));
+  webserver.use(express.static('public'));
 
-    webserver.listen(process.env.PORT || 3000, null, function() {
+  webserver.listen(process.env.PORT || 3000, null, function() {
 
-        debug('Express webserver configured and listening at http://localhost:' + process.env.PORT || 3000);
+    debug('Express webserver configured and listening at http://localhost:' + process.env.PORT || 3000);
 
-    });
+  });
 
-    // import all the pre-defined routes that are present in /components/routes
-    var normalizedPath = require("path").join(__dirname, "routes");
-    require("fs").readdirSync(normalizedPath).forEach(function(file) {
-      require("./routes/" + file)(webserver, controller);
-    });
+  // import all the pre-defined routes that are present in /components/routes
+  var normalizedPath = require("path").join(__dirname, "routes");
+  require("fs").readdirSync(normalizedPath).forEach(function(file) {
+    require("./routes/" + file)(webserver, controller);
+  });
 
-    controller.webserver = webserver;
+  controller.webserver = webserver;
 
-    return webserver;
+  return webserver;
 
 }
