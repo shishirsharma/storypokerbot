@@ -4,6 +4,7 @@ Botkit Studio Skill module to enhance the "hello" script
 
 */
 
+const logger = require('winston');
 
 module.exports = function(controller) {
     // define a before hook
@@ -15,7 +16,7 @@ module.exports = function(controller) {
         // for example, set variables to be used in the message templates
         // convo.setVar('foo','bar');
 
-        console.log('BEFORE: hello');
+        logger.info('BEFORE: hello');
         // don't forget to call next, or your conversation will never continue.
         next();
 
@@ -33,7 +34,7 @@ module.exports = function(controller) {
         /// do something fun and useful
         // convo.setVar('name','value');
 
-        console.log('In the script *hello*, about to start the thread *default*');
+        logger.info('In the script *hello*, about to start the thread *default*');
 
         // always call next!
         next();
@@ -45,7 +46,7 @@ module.exports = function(controller) {
     // See: https://github.com/howdyai/botkit/blob/master/docs/readme-studio.md#controllerstudioafter
     controller.studio.after('hello', function(convo, next) {
 
-        console.log('AFTER: hello');
+        logger.info('AFTER: hello');
 
         // handle the outcome of the convo
         if (convo.successful()) {

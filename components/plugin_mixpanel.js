@@ -1,5 +1,6 @@
-// let request = require('request');
-// let md5 = require('md5');
+// const request = require('request');
+// const md5 = require('md5');
+// const logger = require('winston');
 // let botkit_mixpanel_metrics = function(controller, options) {
 
 //   if (!options) {
@@ -108,7 +109,7 @@
 //           payload.team_id = instance.team.id;
 
 //           if (debug) {
-//             console.log('Send instance', payload);
+//             logger.info('Send instance', payload);
 //           }
 
 //           // track an event with optional properties
@@ -122,7 +123,7 @@
 //       } else {
 
 //         if (debug) {
-//           console.log('Send event', payload);
+//           logger.info('Send event', payload);
 //         }
 
 //         // track an event with optional properties
@@ -166,7 +167,7 @@
 //     //   }
 
 //     //   if (debug) {
-//     //     console.log('Send event', payload);
+//     //     logger.info('Send event', payload);
 //     //   }
 
 //     //   that.callAPI('/api/v2/stats/events', payload, function(err, res) {
@@ -197,7 +198,7 @@
 
 //       if (!bot.getMessageUserMixpanel) {
 //         if (debug) {
-//           console.log('Setting bot.getMessageUserMixpanel');
+//           logger.info('Setting bot.getMessageUserMixpanel');
 //         }
 
 //         bot.getMessageUserMixpanel = function(message, cb) {
@@ -259,7 +260,7 @@
 //         }
 
 //         if (debug) {
-//           console.log('Send user', payload);
+//           logger.info('Send user', payload);
 //         }
 
 //         // create or update a user in Mixpanel Engage without altering $last_seen
@@ -300,7 +301,7 @@
 //     //       payload.attributes.team_id = instance.team.id;
 
 //     //       if (debug) {
-//     //         console.log('Send instance', payload);
+//     //         logger.info('Send instance', payload);
 //     //       }
 
 //     //       that.callAPI('/api/v2/stats/instances', payload, function(err, res) {
@@ -315,7 +316,7 @@
 //     //     });
 //     //   } else {
 //     //     if (debug) {
-//     //       console.log('Send instance', payload);
+//     //       logger.info('Send instance', payload);
 //     //     }
 
 //     //     that.callAPI('/api/v2/stats/instances', payload, function(err, res) {

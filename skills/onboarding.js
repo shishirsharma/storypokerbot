@@ -15,7 +15,7 @@ module.exports = function(controller) {
         // for example, set variables to be used in the message templates
         // convo.setVar('foo','bar');
 
-        console.log('BEFORE: onboarding');
+        logger.info('BEFORE: onboarding');
         // don't forget to call next, or your conversation will never continue.
         next();
 
@@ -33,7 +33,7 @@ module.exports = function(controller) {
         /// do something fun and useful
         // convo.setVar('name','value');
 
-        console.log('In the script *onboarding*, about to start the thread *default*');
+        logger.info('In the script *onboarding*, about to start the thread *default*');
 
         // always call next!
         next();
@@ -45,7 +45,7 @@ module.exports = function(controller) {
         /// do something fun and useful
         // convo.setVar('name','value');
 
-        console.log('In the script *onboarding*, about to start the thread *timeout*');
+        logger.info('In the script *onboarding*, about to start the thread *timeout*');
 
         // always call next!
         next();
@@ -57,7 +57,7 @@ module.exports = function(controller) {
     // See: https://github.com/howdyai/botkit/blob/master/docs/readme-studio.md#controllerstudioafter
     controller.studio.after('onboarding', function(convo, next) {
 
-        console.log('AFTER: onboarding');
+        logger.info('AFTER: onboarding');
 
         // handle the outcome of the convo
         if (convo.successful()) {

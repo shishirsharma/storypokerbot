@@ -8,12 +8,13 @@ In this example, Botkit hears a keyword, then asks a question. Different paths
 through the conversation are chosen based on the user's response.
 
 */
+const logger = require('winston');
 
 module.exports = function(controller) {
 
     // controller.hears('', 'ambient', function(bot, message) {
-    //     console.log('ambient');
-    //     console.log(message);
+    //     logger.info('ambient');
+    //     logger.info(message);
     // });
 
     controller.hears(['color'], 'direct_message,direct_mention', function(bot, message) {

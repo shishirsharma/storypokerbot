@@ -51,23 +51,25 @@
   -> http://howdy.ai/botkit
 
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+const logger = require('winston');
+
 var env = require('node-env-file');
 try {
   env(__dirname + '/.env');
 } catch (err) {
-  console.log('Warning: .env file not found hope environment is set some other way');
+  logger.info('Warning: .env file not found hope environment is set some other way');
 }
 
 // var environment = process.env.NODE_ENV;
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
-  console.log('Error: Specify clientId clientSecret and PORT in environment');
+  logger.info('Error: Specify clientId clientSecret and PORT in environment');
   usage_tip();
   process.exit(1);
 }
 
 var Botkit = require('botkit');
-var debug = require('debug')('botkit:main');
+const debug = require('debug')('botkit:main');
 
 var bot_options = {
   clientId: process.env.clientId,
@@ -94,7 +96,7 @@ if (process.env.MONGODB_URI) {
   bot_options.storage = mongoStorage;
   db = require('monk')(process.env.MONGODB_URI);
 } else {
-  console.log('Error: Specify mongodb_uri in environment');
+  logger.info('Error: Specify mongodb_uri in environment');
   usage_tip();
   process.exit(1);
 }
@@ -189,20 +191,20 @@ if (process.env.studio_token) {
     });
   });
 } else {
-  console.log('~~~~~~~~~~');
-  console.log('NOTE: Botkit Studio functionality has not been enabled');
-  console.log('To enable, pass in a studio_token parameter with a token from https://studio.botkit.ai/');
+  logger.info('~~~~~~~~~~');
+  logger.info('NOTE: Botkit Studio functionality has not been enabled');
+  logger.info('To enable, pass in a studio_token parameter with a token from https://studio.botkit.ai/');
 }
 
 
 
 
 function usage_tip() {
-  console.log('~~~~~~~~~~');
-  console.log('Botkit Starter Kit');
-  console.log('Execute your bot application like this:');
-  console.log('clientId=<MY SLACK CLIENT ID> clientSecret=<MY CLIENT SECRET> PORT=3000 studio_token=<MY BOTKIT STUDIO TOKEN> node bot.js');
-  console.log('Get Slack app credentials here: https://api.slack.com/apps')
-  console.log('Get a Botkit Studio token here: https://studio.botkit.ai/')
-  console.log('~~~~~~~~~~');
+  logger.info('~~~~~~~~~~');
+  logger.info('Botkit Starter Kit');
+  logger.info('Execute your bot application like this:');
+  logger.info('clientId=<MY SLACK CLIENT ID> clientSecret=<MY CLIENT SECRET> PORT=3000 studio_token=<MY BOTKIT STUDIO TOKEN> node bot.js');
+  logger.info('Get Slack app credentials here: https://api.slack.com/apps')
+  logger.info('Get a Botkit Studio token here: https://studio.botkit.ai/')
+  logger.info('~~~~~~~~~~');
 }

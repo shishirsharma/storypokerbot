@@ -1,6 +1,7 @@
 const debug = require('debug')('botkit:slash_command');
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
 const uuidv1 = require('uuid/v1');
+const logger = require('winston');
 
 module.exports = function(controller) {
 
@@ -8,7 +9,7 @@ module.exports = function(controller) {
   // if the button action is 'action', trigger an event
   // if the button action is 'say', act as if user said that thing
   controller.on('interactive_message_callback', function(bot, trigger) {
-    console.log(trigger);
+    logger.info(trigger);
     dashbot.logIncoming(bot.identity, bot.team_info, trigger);
 
     function showResult(bot, message, reply, value, opts) {
@@ -97,9 +98,9 @@ module.exports = function(controller) {
 
       reply.attachments[0].image_url = `https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:${graph_data.join(',')}&chdl=Points&chco=5131C9&chxt=x&chxl=0:|0|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11`
 
-      console.log(reply.attachments);
+      logger.info(reply.attachments);
 
-      // console.log(reply);
+      // logger.info(reply);
       reply.channel = message.channel;
       // dashbot.logOutgoing(bot.identity, bot.team_info, reply);
       bot.replyInteractive(trigger, reply);
@@ -260,7 +261,7 @@ module.exports = function(controller) {
         }
       ]
 
-      // console.log(reply);
+      // logger.info(reply);
       reply.channel = message.channel;
       // dashbot.logOutgoing(bot.identity, bot.team_info, reply);
       bot.replyInteractive(trigger, reply);
@@ -351,13 +352,13 @@ module.exports = function(controller) {
           "text": `${person} has dismissed`
         });
 
-        // console.log(reply);
+        // logger.info(reply);
         reply.channel = message.channel;
         // dashbot.logOutgoing(bot.identity, bot.team_info, reply);
         bot.replyInteractive(trigger, reply);
       }
 
-      //console.log(JSON.stringify(reply));
+      //logger.info(JSON.stringify(reply));
 
 
       return false; // do not bubble event
@@ -378,25 +379,25 @@ module.exports = function(controller) {
       }
       let action_payload;
       if (trigger.actions[0].type === 'select') {
-        console.log('action_payload select');
+        logger.info('action_payload select');
         action_payload = trigger.actions[0].selected_options[0].value;
-        console.log('action_payload');
-        console.log(trigger.actions[0].selected_options[0]);
+        logger.info('action_payload');
+        logger.info(trigger.actions[0].selected_options[0]);
       } else {
-        console.log('action_payload button');
+        logger.info('action_payload button');
         action_payload = trigger.actions[0].value;
-        console.log('action_payload');
-        console.log(trigger.actions[0]);
+        logger.info('action_payload');
+        logger.info(trigger.actions[0]);
       }
 
       let value = {};
 
       // try {
       //   //value = JSON.parse(reply.attachments[2].actions[0].value);
-      //   console.log('Value from persistence', value);
+      //   logger.info('Value from persistence', value);
 
       // } catch(error) {
-      //   console.log('Value error reply.attachments[2].actions:', reply.attachments[2].actions);
+      //   logger.info('Value error reply.attachments[2].actions:', reply.attachments[2].actions);
       // }
 
       controller.storage.games.get(uuid, (err, data) => {
@@ -406,8 +407,8 @@ module.exports = function(controller) {
           value = data.value;
         }
 
-        console.log('action_payload');
-        console.log(action_payload);
+        logger.info('action_payload');
+        logger.info(action_payload);
 
         value[trigger.user] = action_payload;
         let games = controller.db.get('games');
@@ -423,11 +424,11 @@ module.exports = function(controller) {
           upsert: true,
           returnNewDocument: true
         }, (err, data) => {
-          console.log('finally saved ' + err + " # " + JSON.stringify(data));
+          logger.info('finally saved ' + err + " # " + JSON.stringify(data));
         });
 
-        console.log('Updated value');
-        console.log(JSON.stringify(value));
+        logger.info('Updated value');
+        logger.info(JSON.stringify(value));
 
 
         reply.attachments[2].actions[0].value = `${JSON.stringify(value)}`;
@@ -437,9 +438,9 @@ module.exports = function(controller) {
           "text": `${Object.keys(value).map(u => '<@' + u + '>').join(', ')} has pointed`
         };
 
-        //console.log(JSON.stringify(reply));
+        //logger.info(JSON.stringify(reply));
 
-        // console.log(reply);
+        // logger.info(reply);
         reply.channel = message.channel;
         // dashbot.logOutgoing(bot.identity, bot.team_info, reply);
         bot.replyInteractive(trigger, reply);

@@ -1,4 +1,4 @@
-var debug = require('debug')('botkit:rtm_manager');
+const debug = require('debug')('botkit:rtm_manager');
 
 module.exports = function(controller) {
 

@@ -3,6 +3,7 @@
 Botkit Studio Skill module to enhance the "thanks" script
 
 */
+const logger = require('winston');
 
 
 module.exports = function(controller) {
@@ -15,7 +16,7 @@ module.exports = function(controller) {
         // for example, set variables to be used in the message templates
         // convo.setVar('foo','bar');
 
-        console.log('BEFORE: thanks');
+        logger.info('BEFORE: thanks');
         // don't forget to call next, or your conversation will never continue.
         next();
 
@@ -33,7 +34,7 @@ module.exports = function(controller) {
         /// do something fun and useful
         // convo.setVar('name','value');
 
-        console.log('In the script *thanks*, about to start the thread *default*');
+        logger.info('In the script *thanks*, about to start the thread *default*');
 
         // always call next!
         next();
@@ -45,7 +46,7 @@ module.exports = function(controller) {
     // See: https://github.com/howdyai/botkit/blob/master/docs/readme-studio.md#controllerstudioafter
     controller.studio.after('thanks', function(convo, next) {
 
-        console.log('AFTER: thanks');
+        logger.info('AFTER: thanks');
 
         // handle the outcome of the convo
         if (convo.successful()) {

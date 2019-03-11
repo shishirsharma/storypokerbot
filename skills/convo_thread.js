@@ -4,6 +4,7 @@ Botkit Studio Skill module to enhance the "convo_thread" script
 
 */
 
+const logger = require('winston');
 
 module.exports = function(controller) {
     // define a before hook
@@ -15,7 +16,7 @@ module.exports = function(controller) {
         // for example, set variables to be used in the message templates
         // convo.setVar('foo','bar');
 
-        console.log('BEFORE: convo_thread');
+        logger.info('BEFORE: convo_thread');
         // don't forget to call next, or your conversation will never continue.
         next();
 
@@ -34,7 +35,7 @@ module.exports = function(controller) {
         // test or validate value somehow
         // can call convo.gotoThread() to change direction of conversation
 
-        console.log('VALIDATE: convo_thread VARIABLE: question_1');
+        logger.info('VALIDATE: convo_thread VARIABLE: question_1');
 
         // always call next!
         next();
@@ -49,7 +50,7 @@ module.exports = function(controller) {
         // test or validate value somehow
         // can call convo.gotoThread() to change direction of conversation
 
-        console.log('VALIDATE: convo_thread VARIABLE: question_2');
+        logger.info('VALIDATE: convo_thread VARIABLE: question_2');
 
         // always call next!
         next();
@@ -64,7 +65,7 @@ module.exports = function(controller) {
         // test or validate value somehow
         // can call convo.gotoThread() to change direction of conversation
 
-        console.log('VALIDATE: convo_thread VARIABLE: question_3');
+        logger.info('VALIDATE: convo_thread VARIABLE: question_3');
 
         // always call next!
         next();
@@ -82,7 +83,7 @@ module.exports = function(controller) {
         /// do something fun and useful
         // convo.setVar('name','value');
 
-        console.log('In the script *convo_thread*, about to start the thread *default*');
+        logger.info('In the script *convo_thread*, about to start the thread *default*');
 
         // always call next!
         next();
@@ -94,7 +95,7 @@ module.exports = function(controller) {
         /// do something fun and useful
         // convo.setVar('name','value');
 
-        console.log('In the script *convo_thread*, about to start the thread *on_timeout*');
+        logger.info('In the script *convo_thread*, about to start the thread *on_timeout*');
 
         // always call next!
         next();
@@ -106,7 +107,7 @@ module.exports = function(controller) {
         /// do something fun and useful
         // convo.setVar('name','value');
 
-        console.log('In the script *convo_thread*, about to start the thread *yes_thread*');
+        logger.info('In the script *convo_thread*, about to start the thread *yes_thread*');
 
         // always call next!
         next();
@@ -118,7 +119,7 @@ module.exports = function(controller) {
         /// do something fun and useful
         // convo.setVar('name','value');
 
-        console.log('In the script *convo_thread*, about to start the thread *yes_thread2*');
+        logger.info('In the script *convo_thread*, about to start the thread *yes_thread2*');
 
         // always call next!
         next();
@@ -130,7 +131,7 @@ module.exports = function(controller) {
     // See: https://github.com/howdyai/botkit/blob/master/docs/readme-studio.md#controllerstudioafter
     controller.studio.after('convo_thread', function(convo, next) {
 
-        console.log('AFTER: convo_thread');
+        logger.info('AFTER: convo_thread');
 
         // handle the outcome of the convo
         if (convo.successful()) {

@@ -1,7 +1,7 @@
+const logger = require('winston');
 const uuidv4 = require('uuid/v4');
-
-var debug = require('debug')('botkit:slash_command');
-var dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
+const debug = require('debug')('botkit:slash_command');
+const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
 
 module.exports = function(controller) {
 
@@ -18,8 +18,8 @@ module.exports = function(controller) {
         bot.replyPublic(message, "Ok, I am staring a stand up <!here> in the channel.");
       },
       '/pointstory': function() {
-        console.log('playing pointing poker');
-        // console.log(message);
+        logger.info('playing pointing poker');
+        // logger.info(message);
         let value = {};
         let uuid = uuidv4();
         let replyMessage = {

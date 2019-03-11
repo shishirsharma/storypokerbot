@@ -1,4 +1,5 @@
-var debug = require('debug')('botkit:dashbotTackover');
+const debug = require('debug')('botkit:dashbotTackover');
+const logger = require('winston');
 
 module.exports = function(webserver, controller) {
 
@@ -12,14 +13,14 @@ module.exports = function(webserver, controller) {
         let paused = payload.paused;
         controller.storage.teams.get(teamId, function(error, team_data) {
           if (error) {
-            console.log('unable to pause team');
+            logger.info('unable to pause team');
             // reject(error);
             return;
           }
           team_data.paused = paused;
           controller.storage.teams.save(team_data, function(error) {
             if (error) {
-              console.log('unable to pause team');
+              logger.info('unable to pause team');
               // reject(error);
               return;
             }
@@ -42,7 +43,7 @@ module.exports = function(webserver, controller) {
           let text = payload.text;
           controller.findTeamById(teamId, (error, team) => {
             if (error) {
-              console.log('unable to find team');
+              logger.info('unable to find team');
               // reject(error);
               return;
             }

@@ -17,6 +17,7 @@
         botkit-storage-mysql
 
 */
+const logger = require('winston');
 
 module.exports = function(controller) {
 

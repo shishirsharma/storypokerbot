@@ -1,4 +1,5 @@
-var debug = require('debug')('botkit:channel_join');
+const debug = require('debug')('botkit:channel_join');
+const logger = require('winston');
 
 module.exports = function(controller) {
 

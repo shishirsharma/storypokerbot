@@ -1,9 +1,9 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var querystring = require('querystring');
-var debug = require('debug')('botkit:webserver');
+const express = require('express');
+const bodyParser = require('body-parser');
+const querystring = require('querystring');
+const debug = require('debug')('botkit:webserver');
 const Sentry = require('@sentry/node');
-
+const logger = require('winston');
 
 module.exports = function(controller) {
 
@@ -11,7 +11,7 @@ module.exports = function(controller) {
   if (!process.env.SENTRY_ENVIRONMENT) {
     process.env.SENTRY_ENVIRONMENT = 'development';
   }
-  console.log('Using Sentry environment', process.env.SENTRY_ENVIRONMENT);
+  logger.info('Using Sentry environment', process.env.SENTRY_ENVIRONMENT);
 
 
   var webserver = express();
@@ -35,7 +35,7 @@ module.exports = function(controller) {
       res.end(res.sentry + '\n');
     });
 
-    console.log('Sentry init with dsn:', process.env.SENTRY_DSN);
+    logger.info('Sentry init with dsn:', process.env.SENTRY_DSN);
   }
 
   // webserver.use(function(req, res, next) {

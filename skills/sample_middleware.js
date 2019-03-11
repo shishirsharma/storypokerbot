@@ -1,9 +1,11 @@
+const logger = require('winston');
+
 module.exports = function(controller) {
 
     controller.middleware.receive.use(function(bot, message, next) {
 
         // do something...
-        console.log('RCVD:', message);
+        logger.info('RCVD:', message);
         next();
 
     });
@@ -12,7 +14,7 @@ module.exports = function(controller) {
     controller.middleware.send.use(function(bot, message, next) {
 
         // do something...
-        console.log('SEND:', message);
+        logger.info('SEND:', message);
         next();
 
     });

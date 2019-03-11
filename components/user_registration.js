@@ -1,4 +1,4 @@
-var debug = require('debug')('botkit:user_registration');
+const debug = require('debug')('botkit:user_registration');
 
 module.exports = function(controller) {
 

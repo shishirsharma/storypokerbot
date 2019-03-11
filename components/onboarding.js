@@ -1,4 +1,5 @@
-var debug = require('debug')('botkit:onboarding');
+const debug = require('debug')('botkit:onboarding');
+const logger = require('winston');
 
 module.exports = function(controller) {
 
@@ -19,7 +20,7 @@ module.exports = function(controller) {
         } else {
             bot.startPrivateConversation({user: bot.config.createdBy},function(err,convo) {
               if (err) {
-                console.log(err);
+                logger.info(err);
               } else {
                 convo.say('I am a bot that has just joined your team');
                 convo.say('You must now /invite me to a channel so that I can be of use!');

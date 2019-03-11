@@ -1,9 +1,11 @@
-var env = require('node-env-file');
+const env = require('node-env-file');
+const logger = require('winston');
+
 try {
   env(__dirname + '/../.env.production');
-  // console.log(JSON.stringify(process.env));
+  // logger.info(JSON.stringify(process.env));
 } catch (err) {
-  console.log('Warning: .env file not found hope environment is set some other way');
+  logger.info('Warning: .env file not found hope environment is set some other way');
   process.exit();
 }
 
@@ -32,9 +34,9 @@ fromStorage.teams.all(function(err, list) {
     throw new Error('Error: Could not load existing bots:', err);
   } else {
     for (let l = 0; l < list.length; l++) {
-      console.log("Saved team :"+l+":"+JSON.stringify(list[l]));
+      logger.info("Saved team :"+l+":"+JSON.stringify(list[l]));
       toStorage.teams.save(list[l], (err, value) => {
-        console.log("Saved team :"+l+":"+JSON.stringify(list[l]));
+        logger.info("Saved team :"+l+":"+JSON.stringify(list[l]));
       });
     }
   }
@@ -45,9 +47,9 @@ fromStorage.users.all(function(err, list) {
     throw new Error('Error: Could not load existing bots:', err);
   } else {
     for (let l = 0; l < list.length; l++) {
-      console.log("Saved user :"+l+": "+JSON.stringify(list[l]));
+      logger.info("Saved user :"+l+": "+JSON.stringify(list[l]));
       toStorage.users.save(list[l], (err, value) => {
-        console.log("Saved user :"+l+": "+JSON.stringify(list[l]));
+        logger.info("Saved user :"+l+": "+JSON.stringify(list[l]));
       });
     }
   }

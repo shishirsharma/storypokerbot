@@ -32,6 +32,7 @@
     "request": "^2.79.0",
     "slick-carousel": "^1.8.1",
     "uuid": "^3.3.2",
+    "winston": "^3.2.1",
     "wordfilter": "^0.2.6"
   },
   "devDependencies": {
