@@ -22,6 +22,7 @@ module.exports = function(controller) {
         text: raw_reply.text,
         attachments: raw_reply.attachments
       };
+      // let reply = raw_reply;
 
       reply.attachments = [ {
         "fallback": "Pre-filled because you have actions in your attachment.",
@@ -58,19 +59,22 @@ module.exports = function(controller) {
         ]
       } ];
 
-      if(opts.type === 'done') {
-        delete reply.attachments[0]["actions"];
-      }
+      // if(opts.type === 'done') {
+      //   delete reply.attachments[0]["actions"];
+      // }
+
       let graph = {
         '0': 0, '1': 0, '2': 0, '3': 0, '5': 0, '8': 0,
         '13': 0, '21': 0, '34': 0, '55': 0
       };
+
       Object.keys(value).forEach(function(key, index) {
         graph[value[key]] += 1;
         reply.attachments.push({
           text: `<@${key}> pointed: ${value[key]}`
         });
       });
+
       let graph_string = ['Points ▼ │ Count ►','──┬───'];
       let graph_data = [];
       Object.keys(graph).forEach(function(point, index) {
@@ -101,16 +105,22 @@ module.exports = function(controller) {
 
       debug("graph_data.join(',')", graph_data.join(','));
 
-      reply.attachments[0].image_url = `https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:${graph_data.join(',')}&chdl=Points&chco=5131C9&chxt=x&chxl=0:|0|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11`
+      try {
 
+
+      reply.attachments[0].image_url = "https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:"+graph_data.join(',')+"&chdl=Points&chco=5131C9&chxt=x&chxl=0:|0|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11";
+      //reply.attachments[0].image_url = "https://secure.gravatar.com/avatar/cc40079a1972ee5ed84472d3383cb354.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F00b63%2Fimg%2Favatars%2Fava_0005-512.png";
+
+
+      } catch(error) {
+        debug('error', error);
+      }
       logger.info("reply.attachments", reply.attachments);
 
       // logger.info(reply);
       reply.channel = message.channel;
       // dashbot.logOutgoing(bot.identity, bot.team_info, reply);
-      bot.replyInteractive(trigger, reply, (err, res)=>{
-        debug("Debug response",err, res);
-      });
+      bot.replyInteractive(trigger, reply);
 
     }
 
@@ -327,9 +337,9 @@ module.exports = function(controller) {
       }
 
       let reply = trigger.original_message;
-      delete reply.type;
-      delete reply.subtype;
-      delete reply.ts;
+      // delete reply.type;
+      // delete reply.subtype;
+      // delete reply.ts;
 
       let value = {};
       try {
