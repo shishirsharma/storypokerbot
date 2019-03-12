@@ -98,7 +98,7 @@ module.exports = function(controller) {
 
       reply.attachments[0].image_url = `https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:${graph_data.join(',')}&chdl=Points&chco=5131C9&chxt=x&chxl=0:|0|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11`
 
-      logger.info(reply.attachments);
+      logger.info("reply.attachments", reply.attachments);
 
       // logger.info(reply);
       reply.channel = message.channel;
@@ -319,6 +319,8 @@ module.exports = function(controller) {
         uuid = uuidv4();
       }
 
+      let reply = trigger.original_message;
+
       let value = {};
       try {
         value = JSON.parse(reply.attachments[2].actions[0].value);
@@ -329,19 +331,17 @@ module.exports = function(controller) {
 
 
       if (trigger.actions[0].name.match(/^Reveal$/)) {
-        let reply = trigger.original_message;
 
         //let value = JSON.parse(reply.attachments[2].actions[0].value);
+        controller.storage.games.get(uuid, (err, data) => {
+          if(data) {
+            value = data.value;
+          }
 
-        showResult(bot, message, reply, uuid, value);
+          showResult(bot, message, reply, uuid, value);
 
-        // controller.storage.games.get(uuid, (err, data) => {
-        //   if(!data) {
-        //     value = data.value;
-        //   }
-        // });
+        });
       } else if(trigger.actions[0].name.match(/^Done$/)) {
-        let reply = trigger.original_message;
 
         //let value = JSON.parse(trigger.actions[0].value);
 
@@ -350,13 +350,11 @@ module.exports = function(controller) {
       } else if(trigger.actions[0].name.match(/^Repoint$/)) {
         let person = '<@' + trigger.user + '>';
         let value = {};
-        let reply =  trigger.original_message;
 
         showGame(bot, message, reply, uuid, value);
 
       } else if(trigger.actions[0].name.match(/^Dismiss$/)){
         let person = '<@' + trigger.user + '>';
-        let reply = trigger.original_message;
         reply.attachments = [];
         reply.attachments.push({
           "text": `${person} has dismissed`
