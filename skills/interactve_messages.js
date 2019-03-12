@@ -19,60 +19,28 @@ module.exports = function(controller) {
         opts.type = 'reveal';
       }
       let reply = {
-        text: raw_reply.text,
-        attachments: raw_reply.attachments
+        blocks: raw_reply.attachments
       };
       // let reply = raw_reply;
 
-      reply.attachments = [ {
-        "fallback": "Pre-filled because you have actions in your attachment.",
-        "color": "#bdc3c7",
-        "mrkdwn_in": [
-          "text",
-          "pretext",
-          "fields"
-        ],
-        "callback_id": `select_poker_action:${uuid}`,
-        "attachment_type": "default",
-        "actions": [
-          {
-            "name": "Repoint",
-            "text": "Repoint",
-            "type": "button",
-            "style": "default",
-            "value": `${JSON.stringify({})}`
-          },
-          {
-            "name": "Done",
-            "text": "Done",
-            "type": "button",
-            "style": "default",
-            "value": `${JSON.stringify(value)}`
-          },
-          {
-            "name": "Dismiss",
-            "text": "Dismiss",
-            "type": "button",
-            "style": "default",
-            "value": "Dismiss"
-          }
-        ]
-      } ];
 
-      // if(opts.type === 'done') {
-      //   delete reply.attachments[0]["actions"];
-      // }
 
       let graph = {
         '0': 0, '1': 0, '2': 0, '3': 0, '5': 0, '8': 0,
         '13': 0, '21': 0, '34': 0, '55': 0
       };
+      let grouped_users = {};
 
       Object.keys(value).forEach(function(key, index) {
         graph[value[key]] += 1;
-        reply.attachments.push({
-          text: `<@${key}> pointed: ${value[key]}`
-        });
+        if(!grouped_users[value[key]]) {
+          grouped_users[value[key]] = [`<@${key}>`];
+        } else {
+          grouped_users[value[key]].push(`<@${key}>`);
+        }
+        //reply.attachments.push({
+        //  text: `<@${key}> pointed: ${value[key]}`
+        //});
       });
 
       let graph_string = ['Points ▼ │ Count ►','──┬───'];
@@ -105,16 +73,87 @@ module.exports = function(controller) {
 
       debug("graph_data.join(',')", graph_data.join(','));
 
-      try {
-
-
-      reply.attachments[0].image_url = "https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:"+graph_data.join(',')+"&chdl=Points&chco=5131C9&chxt=x&chxl=0:|0|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11";
+      let image_url = `https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:${graph_data.join(',')}&chdl=Points&chco=5131C9&chxt=x&chxl=0:|0|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11&bla.png`;
       //reply.attachments[0].image_url = "https://secure.gravatar.com/avatar/cc40079a1972ee5ed84472d3383cb354.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2F00b63%2Fimg%2Favatars%2Fava_0005-512.png";
 
+      // reply.attachments[0].image_url = image_url;
+      //reply.attachments[0].pretext = ``;
 
-      } catch(error) {
-        debug('error', error);
+
+      reply.blocks = [
+        {
+		      "type": "section",
+		      "text": {
+			      "type": "mrkdwn",
+			      "text": raw_reply.text
+		      }
+	      },
+        {
+		      "type": "image",
+		      "title": {
+			      "type": "plain_text",
+			      "text": "Points vs People",
+			      "emoji": true
+		      },
+		      "image_url": image_url,
+		      "alt_text": "Points vs People"
+	      },
+      ];
+      debug("Value for next action is ", JSON.stringify(value));
+      if(opts.type !== 'done') {
+
+        reply.attachments = [
+          {
+            "fallback": "Pre-filled because you have actions in your attachment.",
+            "color": "#bdc3c7",
+            "mrkdwn_in": [
+              "text",
+              "pretext",
+              "fields"
+            ],
+            "callback_id": `select_poker_action:${uuid}`,
+            "attachment_type": "default",
+            "actions": [
+              {
+                "name": "Repoint",
+                "text": "Repoint",
+                "type": "button",
+                "style": "default",
+                "value": `${JSON.stringify({})}`
+              },
+              {
+                "name": "Done",
+                "text": "Done",
+                "type": "button",
+                "style": "default",
+                "value": `${JSON.stringify(value)}`
+              },
+              {
+                "name": "Dismiss",
+                "text": "Dismiss",
+                "type": "button",
+                "style": "default",
+                "value": "Dismiss"
+              }
+            ]
+          }
+        ];
+
       }
+
+      Object.keys(grouped_users).forEach(function(key, index) {
+        debug('print', grouped_users[key], key);
+        reply.blocks.push(
+          {
+		        "type": "section",
+		        "text": {
+			        "type": "mrkdwn",
+			        "text": `${grouped_users[key].join(', ')} pointed: ${key}`,
+		        }
+	        }
+        );
+      });
+
       logger.info("reply.attachments", reply.attachments);
 
       // logger.info(reply);
@@ -124,12 +163,17 @@ module.exports = function(controller) {
 
     }
 
-    function showGame(bot, message, reply, uuid, value, opts) {
+    function showGame(bot, message, raw_reply, uuid, value, opts) {
       if(!opts) {
         opts = {type: 'reveal'};
       } else if( !opts.type ) {
         opts.type = 'reveal';
       }
+
+      let reply = {
+        text: raw_reply.text,
+        attachments: raw_reply.attachments
+      };
 
       reply.attachments =  [
         {
@@ -327,7 +371,7 @@ module.exports = function(controller) {
         user: trigger.user,
         channel: trigger.channel,
         text: '<@' + bot.identity.id + '> ' + trigger.actions[0].value,
-//        type: 'message',
+        type: 'message',
       };
 
       let uuid = trigger.callback_id.split(':')[1];
@@ -342,15 +386,17 @@ module.exports = function(controller) {
       // delete reply.ts;
 
       let value = {};
-      try {
-        value = JSON.parse(reply.attachments[2].actions[0].value);
-      } catch(error) {
-        logger.info('Value error reply.attachments[2].actions:', reply);
-        value = {};
-      }
 
 
       if (trigger.actions[0].name.match(/^Reveal$/)) {
+        try {
+          value = JSON.parse(reply.attachments[2].actions[0].value);
+          logger.info('Value error reply.attachments[2].actions:', value);
+        } catch(error) {
+          logger.info('Value error reply.attachments[2].actions:', reply);
+          value = {};
+        }
+
         debug("asdfasdfasdf");
         showResult(bot, message, reply, uuid, value);
 
@@ -365,6 +411,15 @@ module.exports = function(controller) {
         // });
       } else if(trigger.actions[0].name.match(/^Done$/)) {
 
+        try {
+          value = JSON.parse(reply.attachments[0].actions[1].value);
+          logger.info('Value error reply.attachments[2].actions:', value);
+        } catch(error) {
+          logger.info('Value error reply.attachments[2].actions:', reply);
+          value = {};
+        }
+
+
         //let value = JSON.parse(trigger.actions[0].value);
 
         showResult(bot, message, reply, uuid, value, {type: 'done'});
@@ -372,6 +427,8 @@ module.exports = function(controller) {
       } else if(trigger.actions[0].name.match(/^Repoint$/)) {
         let person = '<@' + trigger.user + '>';
         let value = {};
+        // This is considered a new game.
+        uuid = uuidv4();
 
         showGame(bot, message, reply, uuid, value);
 
