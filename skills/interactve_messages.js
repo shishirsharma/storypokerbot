@@ -319,11 +319,19 @@ module.exports = function(controller) {
         uuid = uuidv4();
       }
 
+      let value = {};
+      try {
+        value = JSON.parse(reply.attachments[2].actions[0].value);
+      } catch(error) {
+        logger.info('Value error reply.attachments[2].actions:', reply.attachments[2].actions);
+        value = {};
+      }
+
 
       if (trigger.actions[0].name.match(/^Reveal$/)) {
         let reply = trigger.original_message;
 
-        let value = JSON.parse(reply.attachments[2].actions[0].value);
+        //let value = JSON.parse(reply.attachments[2].actions[0].value);
 
         showResult(bot, message, reply, value);
 
@@ -335,7 +343,7 @@ module.exports = function(controller) {
       } else if(trigger.actions[0].name.match(/^Done$/)) {
         let reply = trigger.original_message;
 
-        let value = JSON.parse(trigger.actions[0].value);
+        //let value = JSON.parse(trigger.actions[0].value);
 
         showResult(bot, message, reply, value, {type: 'done'});
 
