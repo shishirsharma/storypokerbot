@@ -1,7 +1,7 @@
 const debug = require('debug')('botkit:slash_command');
 const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY).slack;
-const uuidv1 = require('uuid/v1');
 const logger = require('winston');
+const uuidv4 = require('uuid/v4');
 
 module.exports = function(controller) {
 
@@ -315,6 +315,9 @@ module.exports = function(controller) {
 
       let uuid = trigger.callback_id.split(':')[1];
 
+      if(!uuid) {
+        uuid = uuidv4();
+      }
 
 
       if (trigger.actions[0].name.match(/^Reveal$/)) {
@@ -322,16 +325,15 @@ module.exports = function(controller) {
 
         let value = JSON.parse(reply.attachments[2].actions[0].value);
 
-        controller.storage.games.get(uuid, (err, data) => {
-          if(!data) {
-            value = data.value;
-          }
+        showResult(bot, message, reply, value);
 
-          showResult(bot, message, reply, value);
-        });
+        // controller.storage.games.get(uuid, (err, data) => {
+        //   if(!data) {
+        //     value = data.value;
+        //   }
+        // });
       } else if(trigger.actions[0].name.match(/^Done$/)) {
         let reply = trigger.original_message;
-
 
         let value = JSON.parse(trigger.actions[0].value);
 
@@ -359,8 +361,6 @@ module.exports = function(controller) {
       }
 
       //logger.info(JSON.stringify(reply));
-
-
       return false; // do not bubble event
     } else if (trigger.callback_id.match(/^select_point_action/)) {
       let message = {
@@ -370,6 +370,9 @@ module.exports = function(controller) {
         type: 'message',
       };
       let uuid = trigger.callback_id.split(':')[1];
+      if(!uuid) {
+        uuid = uuidv4();
+      }
 
       let reply = trigger.original_message;
 
@@ -402,7 +405,7 @@ module.exports = function(controller) {
 
       controller.storage.games.get(uuid, (err, data) => {
         if(!data) {
-          value = {};
+          value = JSON.parse(reply.attachments[2].actions[0].value);
         } else {
           value = data.value;
         }
