@@ -12,7 +12,7 @@ module.exports = function(controller) {
     logger.info(trigger);
     dashbot.logIncoming(bot.identity, bot.team_info, trigger);
 
-    function showResult(bot, message, reply, value, opts) {
+    function showResult(bot, message, reply, uuid, value, opts) {
       if(!opts) {
         opts = {type: 'reveal'};
       } else if( !opts.type ) {
@@ -27,7 +27,7 @@ module.exports = function(controller) {
           "pretext",
           "fields"
         ],
-        "callback_id": "select_poker_action",
+        "callback_id": `select_poker_action:${uuid}`,
         "attachment_type": "default",
       }];
 
@@ -107,7 +107,7 @@ module.exports = function(controller) {
 
     }
 
-    function showGame(bot, message, reply, value, opts) {
+    function showGame(bot, message, reply, uuid, value, opts) {
       if(!opts) {
         opts = {type: 'reveal'};
       } else if( !opts.type ) {
@@ -123,7 +123,7 @@ module.exports = function(controller) {
             "pretext",
             "fields"
           ],
-          "callback_id": "select_point_action",
+          "callback_id": `select_point_action:${uuid}`,
           "attachment_type": "default",
           "actions": [
             {
@@ -171,7 +171,7 @@ module.exports = function(controller) {
             "pretext",
             "fields"
           ],
-          "callback_id": "select_point_action",
+          "callback_id": `select_point_action:${uuid}`,
           "attachment_type": "default",
           "actions": [
             {
@@ -233,7 +233,7 @@ module.exports = function(controller) {
             "pretext",
             "fields"
           ],
-          "callback_id": "select_poker_action",
+          "callback_id": `select_poker_action:${uuid}`,
           "attachment_type": "default",
           "actions": [
             {
@@ -333,7 +333,7 @@ module.exports = function(controller) {
 
         //let value = JSON.parse(reply.attachments[2].actions[0].value);
 
-        showResult(bot, message, reply, value);
+        showResult(bot, message, reply, uuid, value);
 
         // controller.storage.games.get(uuid, (err, data) => {
         //   if(!data) {
@@ -345,14 +345,14 @@ module.exports = function(controller) {
 
         //let value = JSON.parse(trigger.actions[0].value);
 
-        showResult(bot, message, reply, value, {type: 'done'});
+        showResult(bot, message, reply, uuid, value, {type: 'done'});
 
       } else if(trigger.actions[0].name.match(/^Repoint$/)) {
         let person = '<@' + trigger.user + '>';
         let value = {};
         let reply =  trigger.original_message;
 
-        showGame(bot, message, reply, value);
+        showGame(bot, message, reply, uuid, value);
 
       } else if(trigger.actions[0].name.match(/^Dismiss$/)){
         let person = '<@' + trigger.user + '>';
