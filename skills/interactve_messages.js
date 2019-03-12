@@ -12,12 +12,16 @@ module.exports = function(controller) {
     logger.info(trigger);
     dashbot.logIncoming(bot.identity, bot.team_info, trigger);
 
-    function showResult(bot, message, reply, uuid, value, opts) {
+    function showResult(bot, message, raw_reply, uuid, value, opts) {
       if(!opts) {
         opts = {type: 'reveal'};
       } else if( !opts.type ) {
         opts.type = 'reveal';
       }
+      let reply = {
+        text: raw_reply.text,
+        attachments: raw_reply.attachments
+      };
 
       reply.attachments = [ {
         "fallback": "Pre-filled because you have actions in your attachment.",
@@ -29,10 +33,7 @@ module.exports = function(controller) {
         ],
         "callback_id": `select_poker_action:${uuid}`,
         "attachment_type": "default",
-      }];
-
-      if(opts.type === 'reveal') {
-        reply.attachments[0]["actions"] = [
+        "actions": [
           {
             "name": "Repoint",
             "text": "Repoint",
@@ -46,7 +47,6 @@ module.exports = function(controller) {
             "type": "button",
             "style": "default",
             "value": `${JSON.stringify(value)}`
-
           },
           {
             "name": "Dismiss",
@@ -55,8 +55,11 @@ module.exports = function(controller) {
             "style": "default",
             "value": "Dismiss"
           }
-        ];
+        ]
+      } ];
 
+      if(opts.type === 'done') {
+        delete reply.attachments[0]["actions"];
       }
       let graph = {
         '0': 0, '1': 0, '2': 0, '3': 0, '5': 0, '8': 0,
@@ -96,6 +99,8 @@ module.exports = function(controller) {
       // http://chart.googleapis.com/chart?cht=bvg&chs=250x150&chd=s:Monkeys&chxt=x,y&chxs=0,ff0000,12,0,lt|1,0000ff,10,1,lt
       // https://chart.googleapis.com/chart?cht=bhg&chs=200x125&chd=s:el,or&chco=4d89f9,c6d9fd
 
+      debug("graph_data.join(',')", graph_data.join(','));
+
       reply.attachments[0].image_url = `https://chart.googleapis.com/chart?cht=bvs&chs=480x270&chd=t:${graph_data.join(',')}&chdl=Points&chco=5131C9&chxt=x&chxl=0:|0|1|2|3|5|8|13|21|34|55&chxs=0,000000,14,-1&chf=bg,s,FFFFFF|c,s,FFFFFF&chbh=a&chtt=Points%20Histogram&chts=000000,12&chds=a&chm=N,000000,0,-1,11`
 
       logger.info("reply.attachments", reply.attachments);
@@ -103,7 +108,9 @@ module.exports = function(controller) {
       // logger.info(reply);
       reply.channel = message.channel;
       // dashbot.logOutgoing(bot.identity, bot.team_info, reply);
-      bot.replyInteractive(trigger, reply);
+      bot.replyInteractive(trigger, reply, (err, res)=>{
+        debug("Debug response",err, res);
+      });
 
     }
 
@@ -310,7 +317,7 @@ module.exports = function(controller) {
         user: trigger.user,
         channel: trigger.channel,
         text: '<@' + bot.identity.id + '> ' + trigger.actions[0].value,
-        type: 'message',
+//        type: 'message',
       };
 
       let uuid = trigger.callback_id.split(':')[1];
@@ -320,27 +327,32 @@ module.exports = function(controller) {
       }
 
       let reply = trigger.original_message;
+      delete reply.type;
+      delete reply.subtype;
+      delete reply.ts;
 
       let value = {};
       try {
         value = JSON.parse(reply.attachments[2].actions[0].value);
       } catch(error) {
-        logger.info('Value error reply.attachments[2].actions:', reply.attachments[2].actions);
+        logger.info('Value error reply.attachments[2].actions:', reply);
         value = {};
       }
 
 
       if (trigger.actions[0].name.match(/^Reveal$/)) {
+        debug("asdfasdfasdf");
+        showResult(bot, message, reply, uuid, value);
 
-        //let value = JSON.parse(reply.attachments[2].actions[0].value);
-        controller.storage.games.get(uuid, (err, data) => {
-          if(data) {
-            value = data.value;
-          }
+        // //let value = JSON.parse(reply.attachments[2].actions[0].value);
+        // controller.storage.games.get(uuid, (err, data) => {
+        //   if(data) {
+        //     value = data.value;
+        //   }
 
-          showResult(bot, message, reply, uuid, value);
+        //   showResult(bot, message, reply, uuid, value);
 
-        });
+        // });
       } else if(trigger.actions[0].name.match(/^Done$/)) {
 
         //let value = JSON.parse(trigger.actions[0].value);
